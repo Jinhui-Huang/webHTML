@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <a href="#asd">跳转</a>
+  <br>
+  <br>
+  <table>
+    <p>人员统计表</p>
+    <thead>
+      <hr>
+      <th>序号</td>
+      <th>姓名</th>
+      <th>年龄</th>
+      </hr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>张三</td>
+        <td>21</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>李四</td>
+        <td>22</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>王五</td>
+        <td>23</td>
+      </tr>
+    </tbody>
+
+  </table>
+  <hr>
+  <b>this is a block</b>
+  <br>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem impedit repellendus cum officiis
+    architecto vero similique ex eius asperiores quidem consectetur porro maiores quibusdam debitis, sint provident!
+    Sapiente, nesciunt eos!
+  </p>
+  <br>
+  <br>
+  <form action="https://www.baidu.com/s" method="get">
+    username: <input type="text" name="wd" disabled value="0379">
+    <br>
+    <!-- readonly 只读不能修改， 值可以被传递 -->
+    <!-- disabled 禁用不能修改， 值不可以传递 -->
+    <!-- checked  默认被选中 -->
+    password: <input type="password" name="pwd" id="" maxlength="7">
+    <br>
+    <input type="radio" name="sex" id="" value="1">man
+    <input type="radio" name="sex" id="" value="2">woman
+    <br>
+    <input type="checkbox" name="food" id="" value="1">check1</input>
+    <input type="checkbox" name="food" id="" value="2">check2</input>
+    <input type="checkbox" name="food" id="" value="3">check3</input>
+    <input type="checkbox" name="food" id="" value="4">check4</input>
+    <br>
+    <select name="year" id="">
+      <option value="-1">---请选择---</option>
+      <option value="2001">2001</option>
+      <option value="2002">2002</option>
+      <option value="2003">2003</option>
+      <option value="2004">2004</option>
+    </select>
+    <br>
+    <input type="submit" value="登陆">
+  </form>
+  <br>
+  <br>
+
+  <form action="">
+    <table border="2px" style="border-spacing: 0;">
+      <thead>
+        <th colspan="2" style="font-size: 30px;">增加标准信息</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="right" width="250px">*标准号: </td>
+          <td><input type="text"></td>
+        </tr>
+        <tr>
+          <td align="right">*中文名称: </td>
+          <td><input type="text"></td>
+        </tr>
+        <tr>
+          <td align="right">*版本: </td>
+          <td><input type="text"></td>
+        </tr>
+        <tr>
+          <td align="right">*关键字/词: </td>
+          <td><input type="text"></td>
+        </tr>
+        <tr>
+          <td align="right">发布日期(yyyy-MM-dd): </td>
+          <td><input type="date"></td>
+        </tr>
+        <tr>
+          <td align="right">实施日期(yyyy-MM-dd): </td>
+          <td><input type="date"></td>
+        </tr>
+        <tr>
+          <td align="right">*附件</td>
+          <td><input type="file"></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <input type="submit" value="保存">
+            <input type="reset" value="取消">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <br>
+  <br>
+  <form action="" style="width: 700px; text-align: center;">
+    <table style="border-spacing: 0; " border="2px" width="700px">
+      <div style="font-size: 30px; ">标准信息列表</div>
+      <thead height="40px">
+        <tr align="right">
+          <th colspan="7">
+            <input type="text">
+            <input type="submit" value="提交检索">
+            <input type="button" value="新增标准">
+            <input type="button" value="删除标准">
+          </th>
+        </tr>
+      </thead>
+      <tbody height="180px">
+        <tr style="background-color: brown; font-weight: bolder;">
+          <td><input type="checkbox" disabled></td>
+          <td>标准号</td>
+          <td>中文名称</td>
+          <td>版本</td>
+          <td>发布日期</td>
+          <td>实施日期</td>
+          <td>操作</td>
+        </tr>
+        <tr style="background-color: burlywood;">
+          <td><input type="checkbox" name="check" id=""></td>
+          <td>GB 66657.1-2014</td>
+          <td align="left">玩具安全 第1部分: 基本规范</td>
+          <td>2014</td>
+          <td>2014-05-06</td>
+          <td>2016-01-01</td>
+          <td>
+            <a href="">下载</a>
+            <a href="">修改</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="check" id=""></td>
+          <td>GB 66657.2-2014</td>
+          <td align="left">玩具安全 第2部分: 机械与物理性能</td>
+          <td>2014</td>
+          <td>2014-05-06</td>
+          <td>2016-01-01</td>
+          <td>
+            <a href="">下载</a>
+            <a href="">修改</a>
+          </td>
+        </tr>
+        <tr style="background-color: burlywood;">
+          <td><input type="checkbox" name="check" id=""></td>
+          <td>GB 66657.3-2014</td>
+          <td align="left">玩具安全 第3部分: 易燃性能</td>
+          <td>2014</td>
+          <td>2014-05-06</td>
+          <td>2016-01-01</td>
+          <td>
+            <a href="">下载</a>
+            <a href="">修改</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="check" id=""></td>
+          <td>GB 66657.4-2014</td>
+          <td align="left">玩具安全 第4部分: 特定元素的迁移</td>
+          <td>2014</td>
+          <td>2014-05-06</td>
+          <td>2016-01-01</td>
+          <td>
+            <a href="">下载</a>
+            <a href="">修改</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7">
+            <span style="color: red; padding-left: 30%;">
+              删除成功!
+            </span>
+            <span style="padding-left: 10%;">
+              <span>
+                首页
+                <span>上一页</span>
+                <span>
+                  <a href="">下一页</a>
+                </span>
+                <span>
+                  <a href="">末页</a>
+                </span>
+              </span>
+              <span>
+                第1页
+              </span>
+              <span>
+                / 共2页
+              </span>
+            </span>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+
+  </form>
+  <br>
+  <br>
+  <form action="" style="width: 700px; border: solid 1px;">
+    <br>
+    <div style="font-size: larger; font-weight: bolder; text-align: center;">
+      图书借阅系统
+    </div>
+    <br>
+    <div>
+      <span> 
+        图书分类: 
+        <select name="bookClass" id="">
+          <option value="-1">---请选择---</option>
+          <option value="IT">IT</option>
+          <option value="人文">人文</option>
+          <option value="科幻">科幻</option>
+        </select>
+      </span>
+      <span>
+        图书名称: <input type="text" name="" id="">
+      </span>
+      <span>
+        是否借阅: 
+        <select name="rent" id="">
+          <option value="-1">---请选择---</option>
+          <option value="true">是</option>
+          <option value="false">否</option>
+        </select>
+      </span>
+      <input type="submit" value="查询">
+    </div>
+    <br>
+    <div style="text-align: right; width: 650px;">
+      当前用户: <span>张三</span>
+      <a href="">退出</a>
+    </div>
+    <table border="1px" style="width: 650px; text-align: left;">
+      
+      <thead style="background-color: rgb(200, 200, 200);">
+        <tr>
+          <th>图书编号</th>
+          <th>图书分类</th>
+          <th>图书名称</th>
+          <th>作者</th>
+          <th>出版社</th>
+          <th>借阅</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background-color: rgb(121, 226, 226);">
+          <td>LQ00002</td>
+          <td>IT</td>
+          <td>SSM整合开发</td>
+          <td>教研部</td>
+          <td>电子工业出版社</td>
+          <td><a href="">申请借阅</a></td>
+        </tr>
+        <tr>
+          <td>LQ00003</td>
+          <td>人文</td>
+          <td>CEP365</td>
+          <td>张三</td>
+          <td>清华大学出版社</td>
+          <td>已借阅</td>
+        </tr>
+        <tr style="background-color: rgb(121, 226, 226);">
+          <td>LQ00004</td>
+          <td>科幻</td>
+          <td>盗墓笔记</td>
+          <td>李四</td>
+          <td>电子工业出版社 </td>
+          <td><a href="">申请借阅</a></td>
+        </tr>
+        <tr>
+          <td>LQ00005</td>
+          <td>IT</td>
+          <td>Hadoop大数据</td>
+          <td>教研部</td>
+          <td>电子工业出版社</td>
+          <td>已借阅</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <div style="padding-left: 30%;">
+      <span><a href="">上一页</a></span>
+      <span><a href="">1</a></span>
+      <span><a href="">2</a></span>
+      <span><a href="">3</a></span>
+      <span><a href="">4</a></span>
+      <span><a href="">5</a></span>
+      <span><a href="">6</a></span>
+      <span><a href="">7</a></span>
+      <span><a href="">8</a></span>
+      <span><a href="">9</a></span>
+      <span><a href="">10</a></span>
+      <span><a href="">下一页</a></span>
+      <span>共100页</span>
+      <span>
+        到第<input type="text" style="width: 30px;">页
+        <input type="submit" value="确定">
+      </span>
+    </div>
+    <br>
+    <br>
+  </form>
+  <br>
+  <a href="" name="asd" style="text-decoration: none;"><i>This text is italic</i></a>
+  <a href="#top">top</a>
+  <br>
+  <br>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  axios.get("http://localhost:10010/user/1?authorization=admin")
+    .then(resp => console.log(resp.data))
+    .catch(err => console.log(err))
+</script>
+
+</html>

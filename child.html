@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="testSubPage()">单击</button>
+    <h1>subpage 子页面</h1>
+
+    <button onclick="windowClose()">关闭</button>
+</body>
+<script>
+    function testSubPage() {
+        alert("父页面的变量: " + window.opener.year);
+        window.opener.show();
+    }
+
+    function windowClose() {
+        window.close();
+    }
+
+</script>
+
+</html>

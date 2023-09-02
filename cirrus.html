@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/message.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <!-- Minified Cirrus CSS -->
+    <link rel="stylesheet" href="css/dist/cirrus-all.min.css"> <!-- Or use CDN link -->
+    <!-- Import your other dependencies -->
+    <link rel="stylesheet" href="css/cirrus.css">
+
+
+<body>
+
+    <div class="header header-fixed u-unselectable header-animated">
+        <div class="header-brand">
+            <div class="nav-item no-hover">
+                <a>
+                    <h6 class="title hover-grow">MYHD</h6>
+                </a>
+            </div>
+            <div class="nav-item nav-btn" id="header-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="header-nav" id="header-menu">
+            <div class="nav-left">
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-github" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-youtube" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-twitter" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item has-sub" id="dropdown">
+                    <a class="nav-dropdown-link">管理内容</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#" onclick="jumpAddDoc()">发布文章</a></li>
+                        <li role="menu-item"><a href="#">修改文章</a></li>
+                        <li role="menu-item"><a href="#">查看数据</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="nav-center">
+                <div class="form-group">
+                    <input type="search" class="form-group-input input--xs" placeholder="Search" />
+                    <button class="form-group-btn">搜索</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <div class="nav-item active">
+                    <a href="#">收藏</a>
+                </div>
+                <div class="nav-item has-sub " id="dropdown">
+                    <a class="nav-dropdown-link">个人中心</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#">好友</a></li>
+                        <li role="menu-item"><a href="#">隐私</a></li>
+                        <li role="menu-item"><a href="#">订阅</a></li>
+                        <li role="menu-item"><a href="#">外观</a></li>
+                        <li class="dropdown-menu-divider"></li>
+                        <li role="menu-item"><a href="#">欢迎来到个人中心</a></li>
+                        <li role="menu-item"><a href="login.html">退出登陆</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid u-gap-2 u-text-center" id="app">
+        <div class="grid-c-3 grid-r-12 g">
+            <div class="frame" style="height: 40rem;">
+                <div class="frame__header">
+                    <div class="avatar hover-grow"><img :src="user.userImg"></div>
+                    <h6 class="u-text-center frame__title">{{user.userName}}</h6>
+                    <p class="u-text-center frame__subtitle">Explostion!!!</p>
+                    <div class="tab-container tabs-fill">
+                        <ul>
+                            <li class="tab-item selected"><a>喜好</a></li>
+                            <li class="tab-item selected"><a>链接</a></li>
+                            <li class="tab-item selected"><a>名称</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="frame__body">
+                    <div class="tile level r">
+                        <div class="tile-avatar"><span class="icon"><i class="fa fa-wrapper fa-github"
+                                    aria-hidden="true"></i></span></div>
+                        <div class="tile__container">
+                            <p class="tile__title">Github</p>
+                            <p class="tile__subtitle">@JinHui-Huang</p>
+                        </div>
+                        <div class="tile__buttons">
+                            <a href="#" class="link-btn">
+                                <span class="icon">
+                                    <i class="fa fa-wrapper fa-pencil small" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tile level r">
+                        <div class="tile-avatar"><span class="icon"><i class="fa fa-wrapper fa-youtube"
+                                    aria-hidden="true"></i></span></div>
+                        <div class="tile__container">
+                            <p class="tile__title">YouTuBe</p>
+                            <p class="tile__subtitle">@megumisuki</p>
+                        </div>
+                        <div class="tile__buttons">
+                            <a href="#" class="link-btn">
+                                <span class="icon">
+                                    <i class="fa fa-wrapper fa-pencil small" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tile level r">
+                        <div class="tile-avatar"><span class="icon"><i class="fa fa-wrapper fa-twitter"
+                                    aria-hidden="true"></i></span></div>
+                        <div class="tile__container">
+                            <p class="tile__title">Twitter</p>
+                            <p class="tile__subtitle">@megumisuki</p>
+                        </div>
+                        <div class="tile__buttons">
+                            <a href="#" class="link-btn">
+                                <span class="icon">
+                                    <i class="fa fa-wrapper fa-pencil small" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tile level r">
+                        <div class="tile-avatar"><span class="icon"><i class="fa fa-wrapper fa-envelope-o"
+                                    aria-hidden="true"></i></span></div>
+                        <div class="tile__container">
+                            <p class="tile__title">Email</p>
+                            <p class="tile__subtitle">{{user.userEmail}}</p>
+                        </div>
+                        <div class="tile__buttons">
+                            <a href="#" class="link-btn">
+                                <span class="icon">
+                                    <i class="fa fa-wrapper fa-pencil small" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="frame__footer"></div>
+            </div>
+            <progress class="progress progress--primary progress--xs" max="100">15%</progress>
+        </div>
+
+        <div class="grid-c-9 grid-r-12 frame g">
+            <br>
+            <h3 class="headline-4 uppercase"> 
+                <b>每日博客</b><span class="desc"><code>每日博客</code></span>
+            </h3>
+            <br>
+            <hr>
+            <div class="u-overflow-auto">
+                <div class="tile u-items-center" v-for="item in docs">
+
+                    <div class="tile__icon">
+                        <figure class="avatar"><img :src="user.userImg"></figure>
+                    </div>
+
+                    <div class="tile__container u-overflow-hidden" style="text-align: left;">
+                        <p class="tile__title m-0 u-text-no-wrap">{{user.userName}} 分享了一篇博客:<b> {{item.docTitle}}</b>.
+                        </p>
+                        <p class="tile__subtitle m-0">{{item.docDescription}}</p>
+                        <span class="info">{{item.docDateTime}}</span>
+                    </div>
+                    <div class="tile__buttons m-0">
+                        <button class="btn--sm btn-animated btn-primary" @click="jumpDoc(item)">👉查看</button>
+                        <button class="btn--sm uppercase btn-animated btn-primary tooltip"
+                            data-tooltip="👍👍👍">👍点赞</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <hr>
+        </div>
+
+        <div class="grid-c-3 grid-r-11 card card--slide-up">
+            <div class="card__container">
+                <div class="card__image"
+                    style="background-image: url(&quot;https://cdn.seovx.com/d/?mom=302&amp;blur&quot;);"></div>
+            </div>
+            <div class="card__mobile-title">
+                <div class="content">
+                    <div class="tile">
+                        <div class="tile__container">
+                            <p class="tile__title">精选文章---归并排序</p>
+                            <p class="tile__subtitle">By {{user.userName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__body content">
+                <p>Located two hours south of Sydney in the Southern Highland of New South Wales...</p>
+            </div>
+            <div class="card__footer content">2 min. read 22 comments</div>
+        </div>
+
+        <div class="grid-c-3 grid-r-11 card card--slide-up">
+            <div class="card__container">
+                <div class="card__image"
+                    style="background-image: url(&quot;https://tuapi.eees.cc/api.php?category=dongman&type=302&amp;blur&quot;);"></div>
+            </div>
+            <div class="card__mobile-title">
+                <div class="content">
+                    <div class="tile">
+                        <div class="tile__container">
+                            <p class="tile__title">精选文章---归并排序</p>
+                            <p class="tile__subtitle">By {{user.userName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__body content">
+                <p>Located two hours south of Sydney in the Southern Highland of New South Wales...</p>
+            </div>
+            <div class="card__footer content">2 min. read 22 comments</div>
+            
+        </div>
+
+        <div class="grid-c-3 grid-r-11 card card--slide-up">
+            <div class="card__container">
+                <div class="card__image"
+                    style="background-image: url(&quot;https://tuapi.eees.cc/api.php?category=dongman&px=m&type=302&amp;blur&quot;)"></div>
+                    <!-- https://img.xjh.me/random_img.php -->
+            </div>
+            <div class="card__mobile-title">
+                <div class="content">
+                    <div class="tile">
+                        <div class="tile__container">
+                            <p class="tile__title">精选文章---归并排序</p>
+                            <p class="tile__subtitle">By {{user.userName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__body content">
+                <p>Located two hours south of Sydney in the Southern Highland of New South Wales...</p>
+            </div>
+            <div class="card__footer content">2 min. read 22 comments</div>
+        </div>
+
+
+        <div class="grid-c-3 grid-r-11  card card--slide-up">
+            <div class="card__container">
+                <div class="card__image"
+                    style="background-image: url(&quot;https://img.paulzzh.tech/touhou/random?&amp;blur&quot;);"></div>
+            </div>
+            <div class="card__mobile-title">
+                <div class="content">
+                    <div class="tile">
+                        <div class="tile__container">
+                            <p class="tile__title">精选文章---归并排序</p>
+                            <p class="tile__subtitle">By {{user.userName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__body content">
+                <p>Located two hours south of Sydney in the Southern Highland of New South Wales...</p>
+            </div>
+            <div class="card__footer content">2 min. read 22 comments</div>
+        </div>
+      
+        <div class="grid-c-12 grid-r-12 g" id="footer">
+            <footer class="footer">
+                <h6 class="footer__title text-white uppercase">Logo</h6>
+                <div class="content">
+                    <div class="divider"></div>
+        
+                    <div class="row">
+                        <div class="col-4">
+                            <ul class="no-bullets">
+                                <a href="!#">
+                                    <li class="footer__list-item">Home</li>
+                                </a>
+                                <a href="!#">
+                                    <li class="footer__list-item">Sign Up</li>
+                                </a>
+                                <a href="!#">
+                                    <li class="footer__list-item">Downloads</li>
+                                </a>
+                                <ul>
+                                </ul>
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <ul class="no-bullets">
+                                <a href="!#">
+                                    <li class="footer__list-item">Company Information</li>
+                                </a>
+                                <a href="!#">
+                                    <li class="footer__list-item">Contact Us</li>
+                                </a>
+                                <a href="!#">
+                                    <li class="footer__list-item">Reviews</li>
+                                </a>
+                                <ul>
+                                </ul>
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <ul class="no-bullets">
+                                <a href="!#">
+                                    <li class="footer__list-item">FAQ</li>
+                                </a>
+                                <a href="!#">
+                                    <li class="footer__list-item">Help Desk</li>
+                                </a>
+                                <a href="!#">
+                                    <li class="footer__list-item">Forums</li>
+                                </a>
+                                <ul>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="subtitle">Company © 2018.</p>
+            </footer>
+        </div>
+    </div>
+
+
+
+</body>
+<script src="./js/kit-fontawsome-com.js" crossorigin="anonymous"></script>
+<script src="./js/message.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/vue.js"></script>
+<script src="./js/axios-0.18.0.js"></script>
+<script>
+    window.QMSG_GLOBALS = {
+        DEFAULTS: {
+            showClose: true,
+            timeout: 5000
+        }
+    };
+
+    $('.has-sub').on('click', function (e) { // Get all dropdown menu toggles
+        $('.dropdown-menu').not($(this).children('.dropdown-menu')).removeClass('dropdown-shown'); // Hide all other dropdown menus
+        $('.has-sub').not($(this)).removeClass('active'); // Remove the active selector from the other dropdown toggles
+        $(this).children('.dropdown-menu').toggleClass('dropdown-shown'); // Show/hide the dropdown menu associated with the toggle being clicked
+        $(this).toggleClass('active'); // Toggle the active selector on the nav-item
+    });
+    // Show dropdown when clicked
+    $('#header-btn').on('click', function (e) {
+        $('#MENU_ID_HERE').toggleClass('active');
+        $('.nav-btn').toggleClass('active');
+    });
+
+    // Hide menu after clicking menu item
+    $('.dropdown-menu li').on('click', function (e) {
+        $('#MENU_ID_HERE').removeClass('active');
+        $('.nav-btn').removeClass('active');
+    });
+    var app = new Vue({
+        el: "#app",
+        data: {
+            baseURL: "http://192.168.1.106:10086",
+            user: {
+                userName: "username",
+                userEmail: "example@email.com",
+                userImg: "/img"
+            },
+            doc: {
+                docId: 0,
+                userEmail: ""
+            },
+            docs: [],
+            img: [1, 2, 3, 4]
+        },
+        methods: {
+            getDocs: async function () {
+                console.log(this.user.userEmail);
+                await axios({
+                    method: 'GET',
+                    url: this.baseURL + '/docs/all_docs/' + this.user.userEmail
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            //console.log(Result.data);
+                            this.docs = Result.data;
+                        } else {
+                            Qmsg.error(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            init: function () {
+                Qmsg.success("登陆成功");
+                console.info(JSON.parse(localStorage.getItem("result")));
+                let user = JSON.parse(localStorage.getItem("result"));
+                this.user.userName = user.userName;
+                this.user.userEmail = user.userEmail;
+                this.user.userImg = user.userImg;
+            },
+            jumpDoc: function (item) {
+                //alert(item.docId);
+                this.doc.docId = item.docId;
+                this.doc.userEmail = this.user.userEmail;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("doc.html");
+            },
+            jumpAddDoc: function() {
+                //alert(this.user.userEmail)
+                this.doc.userEmail = this.user.userEmail;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("edit.html");
+            }
+        },
+        mounted() {
+            this.init();
+            this.getDocs();
+        }
+    });
+function jumpAddDoc() {
+    this.app.jumpAddDoc();
+}
+</script>
+
+</html>

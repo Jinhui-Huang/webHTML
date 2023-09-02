@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Marked in the browser</title>
+    <link rel="stylesheet" href="css/github-markdown-light.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <!-- Minified Cirrus CSS -->
+    <link rel="stylesheet" href="css/dist/cirrus-all.min.css"> <!-- Or use CDN link -->
+
+    <!-- <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.7.0/styles/a11y-light.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.7.0/styles/foundation.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/message.min.css">
+    <style>
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 2px;
+            }
+        }
+
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .frame .frame__header {
+            border-radius: .25rem;
+            float: left;
+            opacity: 0.9;
+            box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            background: #eee;
+            padding: 1rem;
+            margin: 1rem
+        }
+
+        .frame .frame__body {
+            border-radius: .25rem;
+            float: left;
+            opacity: 0.9;
+            box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            background: #eee;
+            padding: 1rem;
+            margin: 0.5rem
+        }
+
+        .frame .frame__footer {
+            border-radius: .25rem;
+            float: left;
+            opacity: 0.9;
+            box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            background: #eee;
+            padding: 1rem;
+            margin: 0.5rem
+        }
+
+        h2 {
+            font-size: 150px;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #54d1ff, #19f1bf);
+            background-size: 600% 600%;
+
+            animation: gradientBG 5s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="frame" id="app">
+        <div class="frame__header">
+            <h3 class="uppercase u-text-center">{{doc.docTitle}}</h3>
+            <p class="tile__subtitle m-0 ">{{doc.docDescription}}</p>
+            <span v-for="(item, i) in tag">
+            <span class="tag" :class="arr[i % 6]">{{item.tagName}}</span>&nbsp;
+            </span>
+        </div>
+
+        <div class="frame__body">
+            <div id="content" class="markdown-body">
+
+            </div>
+            <textarea name="" id="t" style="display: none;" v-model="doc.docContext">
+            </textarea>
+        </div>
+        <div class="frame__footer">
+            <div class="frame__title u-text-center">---页脚---</div>
+            <div class="frame__subtitle u-text-center">详细页脚信息待补充</div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/message.min.js"></script>
+<script>
+    window.QMSG_GLOBALS = {
+        DEFAULTS: {
+            showClose: true,
+            timeout: 5000
+        }
+    };
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            baseURL: "http://192.168.1.106:10086",
+            user: {
+                userEmail: "",
+                userName: ""
+            },
+            doc: {
+                docId: 0,
+                docTitle: "",
+                docContext: "docContext",
+                docDescription: "",
+                docDateTime: ""
+            },
+            tag: [],
+            arr: ["tag--primary", "tag--info", "tag--link", "tag--success", "tag--warning", "tag--danger"]
+        },
+        methods: {
+            getDoc: async function () {
+                await axios({
+                    method: 'POST',
+                    url: this.baseURL + '/docs/doc',
+                    data: {
+                        userEmail: this.user.userEmail,
+                        docId: this.doc.docId
+                    }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            //console.log(Result.data[0]);
+                            this.doc.docContext = Result.data[1].docContext;
+                            this.doc.docDescription = Result.data[1].docDescription;
+                            this.doc.docTitle = Result.data[1].docTitle;
+                            this.tag = Result.data[0]
+
+                        } else {
+                            Qmsg.error(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            show: async function () {
+                let docTemp = JSON.parse(sessionStorage.getItem("doc"));
+                console.info(docTemp);
+                this.doc.docId = docTemp.docId;
+                this.user.userEmail = docTemp.userEmail;
+                await this.getDoc();
+                content.innerHTML = marked.parse(t.value);
+                hljs.initHighlighting();
+            },
+            sleep: function (time) {
+                var timeStamp = new Date().getTime();
+                var endTime = timeStamp + time;
+                while (true) {
+                    if (new Date().getTime() > endTime) {
+                        return;
+                    }
+                }
+            }
+        },
+        mounted() {
+            this.show();
+        }
+    });
+
+</script>
+
+</html>

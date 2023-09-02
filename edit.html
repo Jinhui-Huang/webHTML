@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/message.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <!-- Minified Cirrus CSS -->
+    <link rel="stylesheet" href="css/dist/cirrus-all.min.css"> <!-- Or use CDN link -->
+    <!-- Import your other dependencies -->
+    <link rel="stylesheet" href="css/github-markdown-light.min.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.7.0/styles/foundation.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 2px;
+            }
+        }
+
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .frame .frame__header {
+            border-radius: .25rem;
+            float: left;
+            opacity: 0.9;
+            box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            background: #eee;
+            padding: 1rem;
+            margin: 1rem
+        }
+
+        .frame .frame__body {
+            border-radius: .25rem;
+            float: left;
+            opacity: 0.9;
+            box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            background: #eee;
+            padding: 1rem;
+            margin: 0.5rem
+        }
+
+        .frame .frame__footer {
+            border-radius: .25rem;
+            float: left;
+            opacity: 0.9;
+            box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            background: #eee;
+            padding: 1rem;
+            margin: 0.5rem
+        }
+
+        h2 {
+            font-size: 150px;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #54d1ff, #19f1bf);
+            background-size: 600% 600%;
+
+            animation: gradientBG 5s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        #t {
+            margin-top: -20px;
+            height: 450px;
+        }
+
+        #inputTag {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="frame" id="app">
+        <div class="frame__header">
+            <input type="text" class="u-text-center input--lg" placeholder="*输入文章标题(必填)"
+                v-model="doc.docTitle"></input>
+            <input type="text" class="tile__subtitle m-0 " placeholder="*输入文章描述(必填)"
+                v-model="doc.docDescription"></input>
+            <div style="padding-top: 10px;"></div>
+            <div>
+                <span v-for="(item, i) in tags">
+                    <div class="tag tag--primary" :class="arr[i % 6]">{{item}}</div>
+                    <ion-icon name="close-outline" style="margin-right: 10px;" @click="deleteTag(item)"></ion-icon>
+
+                </span>
+                <input type="text" class="tag tag--rounded" id="inputTag" @keyup.enter="addTag" placeholder="添加tag"
+                    v-model="tag">
+                <ion-icon name="add-outline" @click="addTag"></ion-icon>
+
+            </div>
+
+
+        </div>
+
+        <div class="frame__body">
+            <div id="content" class="markdown-body">
+            </div>
+            <textarea name="text" id="t" v-model="doc.docContext" v-show="isShow"></textarea>
+            <input type="submit" class="btn-primary pull-right" style="width: 100px;" value="预览" v-if="isShow"
+                @click="show" />
+            <span class="u-text-center">
+                <input type="submit" class="btn-link pull-right" value="编辑" style="width: 100px;" v-if="isEdit"
+                    @click="edit" />
+                <input type="submit" class="btn-info pull-right" value="提交" style="width: 100px;" @click="submit" />
+                <span style="margin-left: 300px;" class="col-xs-4 level-item">
+                    <input type="file" style="width: 400px" id="inputFile"
+                        accept="image/gif,image/jpeg,image/jpg,image/png">
+                    <input type="submit" class="btn-link pull-right" @click="upLoadFile" style="width: 100px;" value="上传文件"></input>
+                </span>
+            </span>
+
+
+        </div>
+    </div>
+
+</body>
+<script src="./js/kit-fontawsome-com.js" crossorigin="anonymous"></script>
+<script src="./js/message.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/vue.js"></script>
+<script src="./js/axios-0.18.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            baseURL: "http://192.168.1.106:10086",
+            tag: "",
+            tags: [],
+            isShow: true,
+            isEdit: false,
+            doc: {
+                userEmail: "",
+                docContext: "",
+                docTitle: "",
+                docDescription: ""
+            },
+            arr: ["tag--primary", "tag--info", "tag--link", "tag--success", "tag--warning", "tag--danger"],
+            file: [],
+            imgUrl: ""
+        },
+        methods: {
+            addTag: function () {
+                if (this.tags.length > 20) {
+                    Qmsg.warning("tag数不能大于20")
+                }
+                if (this.tag != "" && this.tag != null) {
+                    this.tags[this.tags.length] = this.tag;
+                    this.tag = "";
+                }
+            },
+            deleteTag: function (item) {
+                let arr = [];
+                let j = 0
+                for (let i = 0; i < this.tags.length; i++) {
+                    if (this.tags[i] != item) {
+                        arr[j] = this.tags[i]
+                        j++;
+                    }
+                }
+                this.tags = arr
+            },
+            show: function () {
+                this.isShow = false;
+                this.isEdit = true;
+                content.innerHTML = marked.parse(this.doc.docContext);
+                hljs.initHighlighting();
+            },
+            edit: function () {
+                content.innerHTML = marked.parse("");
+                this.isShow = true;
+                this.isEdit = false;
+
+            },
+            submit: function () {
+                if (this.doc.docTitle != null && this.doc.docTitle != "") {
+                    if (this.doc.docDescription != null && this.doc.docDescription != "" || this.doc.docDescription > 499) {
+                        if (this.doc.docContext != null && this.doc.docDescription != "" && this.doc.docContext.length >= 200) {
+                            //console.log(this.doc);
+                            //console.log(this.userEmail);
+                            /* 发送axios请求 */
+                            axios({
+                                method: 'PUT',
+                                url: this.baseURL + '/docs/add_doc',
+                                data: {
+                                    doc: this.doc,
+                                    docTags: this.tags
+                                }
+                            })
+                                .then(response => {
+                                    Result = response.data;
+                                    //console.log(Result);
+                                    let code = Result.code;
+                                    let msg = Result.msg;
+                                    if (code == 20031) {
+                                        //console.log(Result.data);
+                                        Qmsg.success(msg);
+                                        this.doc.docContext = "";
+                                        this.doc.docDescription = "";
+                                        this.doc.docTitle = "";
+                                        this.tags = [];
+                                        content.innerHTML = marked.parse("");
+                                        this.isShow = true;
+                                        this.isEdit = false;
+                                    } else {
+                                        Qmsg.error(msg);
+                                    }
+                                }, error => {
+                                    console.log('错误', error.message);
+                                    Qmsg.error(error.message);
+                                });
+                        } else {
+                            Qmsg.warning("文章内容不能为空或小于200字数")
+                        }
+                    } else {
+                        Qmsg.warning("文章描述不能为空, 字数需小于500字");
+                    }
+                }
+                else {
+                    Qmsg.warning("文章标题不能为空");
+                }
+
+
+            },
+            checkFile: function () {
+                this.file = inputFile.files[0];
+                let fileName = this.file.name;
+                console.log(fileName);
+                inputFile.value = "";
+                let imgName = fileName.split(".")[0];
+                let imgType = fileName.split(".")[1];
+                let pat = "/!\\[.*\\]\\(.*" + imgName + "\\." + imgType + "\\)/g";
+                console.log(pat);
+                let pattern = eval(pat);
+                this.doc.docContext = this.doc.docContext.replace(pattern, "![" + imgName + "](" + this.imgUrl + ")");
+                content.innerHTML = marked.parse(this.doc.docContext);
+                hljs.initHighlighting();
+
+            },
+            upLoadFile: function () {
+                if (this.doc.docContext != null && this.doc.docDescription != "") {
+
+                    if (inputFile.files.length == 1) {
+                        this.file = inputFile.files[0];
+                        //console.log(this.file)
+                        var params = new FormData();
+                        params.append('file', this.file)
+                        console.log(params.get("file"));
+                        axios({
+                            method: "POST",
+                            url: this.baseURL + '/docs/doc_img',
+                            data: params,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                            .then(response => {
+                                Result = response.data;
+                                //console.log(Result);
+                                let code = Result.code;
+                                let msg = Result.msg;
+                                if (code == 20031) {
+                                    //console.log(Result.data);
+                                    this.imgUrl = Result.data;
+                                    this.checkFile();
+                                    Qmsg.success(msg);
+                                } else {
+                                    Qmsg.error(msg);
+                                }
+                            }, error => {
+                                console.log('错误', error.message);
+                                Qmsg.error(error.message);
+                            });
+                    } else {
+                        Qmsg.warning("图片不能为空");
+                    }
+                } else {
+                    inputFile.value = "";
+                    Qmsg.warning("文章内容不能为空");
+                }
+            }
+
+        },
+        mounted() {
+            this.doc.userEmail = JSON.parse(sessionStorage.getItem("doc")).userEmail;
+            //alert(this.userEmail); 
+        }
+    });
+
+</script>
+<script>
+    window.onbeforeunload = function (event) {
+        event.returnValue = "Write something clever here..";
+    };
+</script>
+
+</html>

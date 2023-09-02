@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+demo_res
+docs
+index.html
+yarn.lock
+.npmrc
+.idea/**/*
