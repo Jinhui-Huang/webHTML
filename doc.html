@@ -86,6 +86,24 @@
             100% {
                 background-position: 0% 50%;
             }
+
+        }
+
+        button {
+            margin-left: 10px;
+            text-align: center;
+            height: 50px;
+            width: 85px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        #btn {
+            text-align: right;
+        }
+
+        ion-icon {
+            flex: none;
         }
     </style>
 </head>
@@ -95,9 +113,23 @@
         <div class="frame__header">
             <h3 class="uppercase u-text-center">{{doc.docTitle}}</h3>
             <p class="tile__subtitle m-0 ">{{doc.docDescription}}</p>
-            <span v-for="(item, i) in tag">
-            <span class="tag" :class="arr[i % 6]">{{item.tagName}}</span>&nbsp;
-            </span>
+            <div>
+                <span v-for="(item, i) in tag">
+                    <span class="tag" :class="arr[i % 6]">{{item.tagName}}</span>&nbsp;
+                </span>
+            </div>
+            <div id="btn">
+
+                <button class="btn-animated btn-primary" @click="collection" v-if="enabledSee">
+                    <ion-icon name="heart-outline"></ion-icon>收藏
+                </button>
+                <button class="btn-animated" @click="collection" v-if="!enabledSee">
+                    <ion-icon name="heart-outline"></ion-icon>收藏
+                </button>
+                <button class="btn-primary btn-animated tooltip" data-tooltip="👍👍👍+1" @click="click">
+                    👍点赞
+                </button>
+            </div>
         </div>
 
         <div class="frame__body">
@@ -118,6 +150,8 @@
 <script src="js/vue.js"></script>
 <script src="js/axios-0.18.0.js"></script>
 <script src="js/message.min.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script>
     window.QMSG_GLOBALS = {
         DEFAULTS: {
@@ -142,7 +176,9 @@
                 docDateTime: ""
             },
             tag: [],
-            arr: ["tag--primary", "tag--info", "tag--link", "tag--success", "tag--warning", "tag--danger"]
+            arr: ["tag--primary", "tag--info", "tag--link", "tag--success", "tag--warning", "tag--danger"],
+            enabledSee: false,
+            timer: null
         },
         methods: {
             getDoc: async function () {
@@ -183,6 +219,15 @@
                 content.innerHTML = marked.parse(t.value);
                 hljs.initHighlighting();
             },
+            collection: function () {
+                this.enabledSee = !this.enabledSee;
+                if (this.enabledSee) {
+                    Qmsg.success("收藏成功")
+                } else {
+                    Qmsg.info("已取消收藏")
+                }
+
+            },
             sleep: function (time) {
                 var timeStamp = new Date().getTime();
                 var endTime = timeStamp + time;
@@ -191,11 +236,53 @@
                         return;
                     }
                 }
+            },
+            click: function () {
+                let time1 = localStorage.getItem("time")
+                let time2 = Date.now();
+                if (time1 != null) {
+                    if (time2 - time1 > 3600000) {
+                        Qmsg.success("已点赞");
+                        localStorage.setItem("time", time2);
+                    } else {
+                        Qmsg.info("1小时后可再次点赞")
+                    }
+                } else {
+                    let time = Date.now();
+                    localStorage.setItem("time", time);
+                    this.click();
+                }
             }
         },
         mounted() {
             this.show();
+            clearInterval(this.timer)
+            this.timer = null
+            this.timer = setTimeout(() => {
+                axios({
+                    method: 'GET',
+                    url: this.baseURL + '/docs/see/' + this.doc.docId
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            console.log(Result);
+                        } else {
+                            Qmsg.error(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            }, 60000)
+        },
+        beforeDestroy() {
+            clearTimeout(this.timer)
         }
+
     });
 
 </script>

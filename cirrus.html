@@ -14,7 +14,6 @@
     <!-- Import your other dependencies -->
     <link rel="stylesheet" href="css/cirrus.css">
 
-
 <body>
 
     <div class="header header-fixed u-unselectable header-animated">
@@ -58,7 +57,7 @@
                     <a class="nav-dropdown-link">管理内容</a>
                     <ul class="dropdown-menu dropdown-animated" role="menu">
                         <li role="menu-item"><a href="#" onclick="jumpAddDoc()">发布文章</a></li>
-                        <li role="menu-item"><a href="#">修改文章</a></li>
+                        <li role="menu-item"><a href="my-doc.html" >我的文章</a></li>
                         <li role="menu-item"><a href="#">查看数据</a></li>
                     </ul>
                 </div>
@@ -126,7 +125,7 @@
                         <div class="tile-avatar"><span class="icon"><i class="fa fa-wrapper fa-youtube"
                                     aria-hidden="true"></i></span></div>
                         <div class="tile__container">
-                            <p class="tile__title">YouTuBe</p>
+                            <p class="tile__title">YouTube</p>
                             <p class="tile__subtitle">@megumisuki</p>
                         </div>
                         <div class="tile__buttons">
@@ -185,14 +184,18 @@
                 <div class="tile u-items-center" v-for="item in docs">
 
                     <div class="tile__icon">
-                        <figure class="avatar"><img :src="user.userImg"></figure>
+                        <figure class="avatar"><img :src="item[1].userImg"></figure>
                     </div>
 
                     <div class="tile__container u-overflow-hidden" style="text-align: left;">
-                        <p class="tile__title m-0 u-text-no-wrap">{{user.userName}} 分享了一篇博客:<b> {{item.docTitle}}</b>.
+                        <p class="tile__title m-0 u-text-no-wrap">{{item[1].userName}} 分享了一篇博客:<b> {{item[0].docTitle}}</b>.
                         </p>
-                        <p class="tile__subtitle m-0">{{item.docDescription}}</p>
-                        <span class="info">{{item.docDateTime}}</span>
+                        <p class="tile__subtitle m-0">{{item[0].docDescription}}</p>
+                        <div class="level ">
+                            <span class="info ">{{item[0].docDateTime}}</span>
+                            <span class="info " style="margin-right: 600px;">阅读量: {{item[0].docSees}}</span>
+                        </div>
+                        
                     </div>
                     <div class="tile__buttons m-0">
                         <button class="btn--sm btn-animated btn-primary" @click="jumpDoc(item)">👉查看</button>
@@ -208,7 +211,7 @@
         <div class="grid-c-3 grid-r-11 card card--slide-up">
             <div class="card__container">
                 <div class="card__image"
-                    style="background-image: url(&quot;https://cdn.seovx.com/d/?mom=302&amp;blur&quot;);"></div>
+                    style="background-image: url(&quot;https://api.yimian.xyz/img?type=moe&amp;blur&quot;);"></div>
             </div>
             <div class="card__mobile-title">
                 <div class="content">
@@ -294,7 +297,7 @@
       
         <div class="grid-c-12 grid-r-12 g" id="footer">
             <footer class="footer">
-                <h6 class="footer__title text-white uppercase">Logo</h6>
+                <h6 class="footer__title text-white uppercase">MYHD</h6>
                 <div class="content">
                     <div class="divider"></div>
         
@@ -405,7 +408,7 @@
                 console.log(this.user.userEmail);
                 await axios({
                     method: 'GET',
-                    url: this.baseURL + '/docs/all_docs/' + this.user.userEmail
+                    url: this.baseURL + '/docs/all_docs'
                 })
                     .then(response => {
                         Result = response.data;
@@ -433,8 +436,8 @@
             },
             jumpDoc: function (item) {
                 //alert(item.docId);
-                this.doc.docId = item.docId;
-                this.doc.userEmail = this.user.userEmail;
+                this.doc.docId = item[0].docId;
+                this.doc.userEmail = item[0].userEmail;
                 sessionStorage.setItem("doc", JSON.stringify(this.doc));
                 window.open("doc.html");
             },

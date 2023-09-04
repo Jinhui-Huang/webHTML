@@ -20,99 +20,23 @@
 
 <body>
     <div id="app">
-
-        <input type="file" id="inputFile" accept="image/gif,image/jpeg,image/jpg,image/png">
-        <button @click="upLoadFile">提交</button>
-
-        <textarea name="text" id="t" cols="60" rows="60">
-            ### 2.包装类
-- 【1】什么是包装类：
-  以前定义变量，经常使用基本数据类型，
-  对于基本数据类型来说，它就是一个数，加点属性，加点方法，加点构造器，
-  `将基本数据类型对应进行了一个封装`，产生了一个新的类，---》包装类。
-  int,byte.....--->基本数据类型
-  `包装类--->引用数据类型`
-
-![img_7.png](img/img_39.png)
-
-- 【3】已经有基本数据类型了，为什么要封装为包装类？<br>
-  - （1）java语言 面向对象的语言，最擅长的操作各种各样的类。基本数据类型不符合面向对象原理<br>
-  - （2）以前学习装数据的---》数组，int[]  String[]  double[]   Student[]
-     以后学习的装数据的---》`集合，有一个特点，只能装引用数据类型的数据`
-- 【4】integer
-  - 【1】直接使用，无需导包：
-  - 【2】类的继承关系：
-![img_8.png](img/img_40.png)
-  - 【3】实现接口：
-
-  ![img_7.png](img/img_39.png)
-        </textarea>
     </div>
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
 <script src="js/vue.js"></script>
 <script src="js/axios-0.18.0.js"></script>
 <script src="js/message.min.js"></script>
+<script src="js/jquery.min.js"></script>
 <script>
     var app = new Vue({
         el: "#app",
         data: {
             baseURL: "http://192.168.1.106:10086",
-            file: [],
-            imgUrl: ""
+
         },
         methods: {
-            checkFile: function () {
-                this.file = inputFile.files[0];
-                let fileName = this.file.name;
-                console.log(fileName);
-                inputFile.value = "";
-                let imgName = fileName.split(".")[0];
-                let imgType = fileName.split(".")[1];
-                let pat = "/!\\[.*\\]\\(.*" + imgName + "\\." + imgType + "\\)/g";
-                console.log(pat);
-                let pattern = eval(pat);
-                t.value = t.value.replace(pattern, "![" + imgName +"](" + this.imgUrl + ")");
-                
-            },
-            upLoadFile: function () {
-                if (inputFile.files.length == 1) {
-                    this.file = inputFile.files[0];
-                    //console.log(this.file)
-                    var params = new FormData();
-                    params.append('file', this.file)
-                    console.log(params.get("file"));
-                     axios({
-                        method: "POST",
-                        url: this.baseURL + '/docs/doc_img',
-                        data: params,
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    })
-                        .then(response => {
-                            Result = response.data;
-                            //console.log(Result);
-                            let code = Result.code;
-                            let msg = Result.msg;
-                            if (code == 20031) {
-                                //console.log(Result.data);
-                                this.imgUrl = Result.data;
-                                this.checkFile();
-                                Qmsg.success(msg);
-                            } else {
-                                Qmsg.error(msg);
-                            }
-                        }, error => {
-                            console.log('错误', error.message);
-                            Qmsg.error(error.message);
-                        });
-                } else {
-                    Qmsg.warning("图片不能为空");
-                }
-            }
+
         }
     })
 </script>

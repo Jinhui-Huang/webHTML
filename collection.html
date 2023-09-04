@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/message.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <!-- Minified Cirrus CSS -->
+    <link rel="stylesheet" href="css/dist/cirrus-all.min.css"> <!-- Or use CDN link -->
+    <link rel="stylesheet" href="./css/cirrus.css">
+    <style>
+        body {
+            background: linear-gradient(-45deg, #44ff6d, #81f2f6);
+            background-size: 600% 600%;
+
+            animation: gradientBG 5s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script src="./js/message.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/vue.js"></script>
+<script src="./js/axios-0.18.0.js"></script>
+<script src="./js/kit-fontawsome-com.js" crossorigin="anonymous"></script>
+<script>
+    $('.has-sub').on('click', function (e) { // Get all dropdown menu toggles
+        $('.dropdown-menu').not($(this).children('.dropdown-menu')).removeClass('dropdown-shown'); // Hide all other dropdown menus
+        $('.has-sub').not($(this)).removeClass('active'); // Remove the active selector from the other dropdown toggles
+        $(this).children('.dropdown-menu').toggleClass('dropdown-shown'); // Show/hide the dropdown menu associated with the toggle being clicked
+        $(this).toggleClass('active'); // Toggle the active selector on the nav-item
+    });
+    // Show dropdown when clicked
+    $('#header-btn').on('click', function (e) {
+        $('#MENU_ID_HERE').toggleClass('active');
+        $('.nav-btn').toggleClass('active');
+    });
+
+    // Hide menu after clicking menu item
+    $('.dropdown-menu li').on('click', function (e) {
+        $('#MENU_ID_HERE').removeClass('active');
+        $('.nav-btn').removeClass('active');
+    });
+</script>
+
+</html>

@@ -235,6 +235,8 @@ var app = new Vue({
             }
         }
 
-
+    },
+    mounted() {
+        localStorage.setItem("time", null);
     }
 });

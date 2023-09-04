@@ -1,21 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div>
-        <a href="#" id="aid" onclick="click01()">百度</a>
-        <a href="#" name="sname">学生名字</a>
-    </div>
-</body>
-<script type="text/javascript">
-    function click01() {
-        let obj = document.getElementById("aid");
-        obj.href="https://www.baidu.com/";
-    }
+    <title>表单验证示例</title>
+    <style>
+        label.error {
+            color: red;
+        }
 
+        table,
+        th,
+        td {
+            width: 400px;
+            border-collapse: collapse;
+            border: 1px solid rgb(0, 38, 255);
+            text-align: left;
+        }
+
+        td:nth-child(2) {
+            width: 500px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form id="myForm">
+        <table>
+            <tr>
+                <th colspan="2" style="text-align: center;">信息注册页面</th>
+            </tr>
+            <tr>
+                <td>用户名:
+                    </t的>
+                <td><input type="text" name="name" id="name"></td>
+            </tr>
+            <tr>
+                <td>密码:</td>
+                <td> <input type="password" name="password" id="password"></td>
+            </tr>
+            <tr>
+                <td>确定密码:</td>
+                <td> <input type="password" name="passwordCheck" id="passwordCheck"></td>
+            </tr>
+            <tr>
+                <td>电话:</td>
+                <td><input type="tel" name="tel" id="tel"></td>
+            </tr>
+            <tr>
+                <td>邮箱:</td>
+                <td><input type="email" name="email" id="email"></td>
+            </tr>
+            <tr>
+                <td>真实姓名</td>
+                <td><input type="text" name="trueName" id="trueName"></td>
+
+            </tr>
+            <tr>
+                <td>性别：</td>
+                <td> <input type="radio" name="gender" value="male">男
+                    <input type="radio" name="gender" value="female">女
+                </td>
+            </tr>
+            <tr>
+                <td>技术:</td>
+                <td> 
+                    <input type="checkbox" name="interest" value="music">java
+                    <input type="checkbox" name="interest" value="sports">Jsp
+                    <input type="checkbox" name="interest" value="reading">Servlet
+                </td>
+            </tr>
+            <tr>
+                <td>国家:</td>
+                <td><select name="language">
+                        <option value="">--选择国家--</option>
+                        <option value="1">中国</option>
+                        <option value="2">印度</option>
+                        <option value="3">美国</option>
+                        <option value="4">俄罗斯</option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;"> <input type="submit" value="提交数据">
+                    <input type="reset" value="清除数据">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;"> <input type="checkbox" name="agree"> 请勾选同意协议</td>
+            </tr>
+
+        </table>
+    </form>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                password: {
+                    required: true, 
+                    minlength: 6, 
+                    maxlength: 16 
+                },
+                passwordCheck: {
+                    required: true, 
+                    minlength: 6, 
+                    maxlength: 16,
+                    equalTo: "#password" 
+                },
+                tel: {
+                    required: true, 
+                    number: true 
+                },
+                email: {
+                    required: true, 
+                    email: true 
+                },
+                trueName: {
+                    required: true 
+                },
+                gender: {
+                    required: true 
+                },
+                "interest": {
+                    rangelength: [2, 3] 
+                },
+                language: {
+                    required: true, 
+                    min: 1 
+                },
+                agree: {
+                    required: true 
+                }
+            },
+            messages: {
+                // 提示信息
+                name: {
+                    required: "*"
+                },
+                password: {
+                    required: "*",
+                    minlength: "密码长度不能小于6！",
+                    maxlength: "密码长度不能大于16！"
+                },
+                passwordCheck: {
+                    required: "*",
+                    equalTo: "确认密码和密码不一致！"
+                },
+                tel: {
+                    required: "*",
+                    number: "电话只能是数字！"
+                },
+                email: {
+                    required: "*",
+                    email: "邮箱格式不正确！"
+                },
+                trueName: {
+                    required: "*"
+                },
+                gender: {
+                    required: "*"
+                },
+                "interest": {
+                    rangelength: "*至少选择两项"
+                },
+                language: {
+                    required: "*",
+                    min: "*"
+
+                },
+                agree: {
+                    required: "*"
+                }
+            }
+        });
+
+    });
 </script>
+
 </html>

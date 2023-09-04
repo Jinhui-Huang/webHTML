@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/message.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <!-- Minified Cirrus CSS -->
+    <link rel="stylesheet" href="css/dist/cirrus-all.min.css"> <!-- Or use CDN link -->
+    <link rel="stylesheet" href="./css/cirrus.css">
+    <style>
+        body {
+            background: linear-gradient(-45deg, #ff4444, #df81f6);
+            background-size: 600% 600%;
+
+            animation: gradientBG 5s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+
+        .grid {
+            margin-top: 65px;
+            width: 100%;
+            height: 690px;
+        }
+
+        .menu-item {
+            margin-top: 30px;
+        }
+
+        .pagination {
+            margin-left: 80px;
+            margin-bottom: 40px;
+            height: 45px;
+        }
+
+        h6 {
+            margin-top: 15px;
+            margin-left: 6px;
+        }
+
+        .pagination-item span {
+            width: 50px;
+            height: 45px;
+
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header header-fixed u-unselectable header-animated">
+        <div class="header-brand">
+            <div class="nav-item no-hover">
+                <a>
+                    <h6 class="title hover-grow">MYHD</h6>
+                </a>
+            </div>
+            <div class="nav-item nav-btn" id="header-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="header-nav" id="header-menu">
+            <div class="nav-left">
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-github" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-youtube" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-twitter" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item has-sub" id="dropdown">
+                    <a class="nav-dropdown-link">管理内容</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#" onclick="jumpAddDoc()">发布文章</a></li>
+                        <li role="menu-item"><a href="#">查看数据</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="nav-center">
+                <div class="form-group">
+                    <input type="search" class="form-group-input input--xs" placeholder="Search" />
+                    <button class="form-group-btn">搜索</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <div class="nav-item active">
+                    <a href="cirrus.html">主页</a>
+                </div>
+                <div class="nav-item has-sub " id="dropdown">
+                    <a class="nav-dropdown-link">个人中心</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#">好友</a></li>
+                        <li role="menu-item"><a href="#">隐私</a></li>
+                        <li role="menu-item"><a href="#">订阅</a></li>
+                        <li role="menu-item"><a href="#">外观</a></li>
+                        <li class="dropdown-menu-divider"></li>
+                        <li role="menu-item"><a href="#">欢迎来到个人中心</a></li>
+                        <li role="menu-item"><a href="login.html">退出登陆</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid u-gap-2 u-text-center" id="app">
+        <div class="grid-c-2 grid-r-12 g">
+            <div class="frame" style="height: 40rem;">
+                <div class="frame__header">
+                    <div class="avatar hover-grow"><img :src="user.userImg"></div>
+                    <h6 class="u-text-center frame__title">{{user.userName}}</h6>
+                    <p class="u-text-center frame__subtitle">Explostion!!!</p>
+                    <div class="tab-container tabs-fill">
+                        <ul>
+                            <li class="tab-item" style="opacity: 0.6;"><a>文章数据</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="frame__body">
+                    <ul class="menu">
+                        <li class="menu-item">
+                            <div class="tile level c tag tag--link">
+                                <div class="tile__container">
+                                    <p class="tile__title">文章总数量📃: {{this.docs.length}}</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="tile level c tag tag--primary">
+                                <div class="tile__container">
+                                    <p class="tile__title">文章总阅读量👀: </p>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="menu-item">
+                            <div class="tile level c tag tag--info">
+                                <div class="tile__container">
+                                    <p class="tile__title">文章总点赞数👍: 12</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <progress class="progress progress--primary progress--xs" max="100">15%</progress>
+        </div>
+
+        <div class="grid-c-10 grid-r-12 frame g">
+            <br>
+            <h3 class="headline-4 uppercase">
+                <b>我的文章</b><span class="desc"><code>我的文章</code></span>
+            </h3>
+            <br>
+            <hr>
+            <div class="u-overflow-auto">
+                <div class="tile u-items-center" v-for="item in docs">
+
+                    <div class="tile__icon">
+                        <figure class="avatar"><img :src="user.userImg"></figure>
+                    </div>
+
+                    <div class="tile__container u-overflow-hidden" style="text-align: left;">
+                        <p class="tile__title m-0 u-text-no-wrap"><b> {{item.docTitle}}</b>.
+                        </p>
+                        <p class="tile__subtitle m-0">{{item.docDescription}}</p>
+                        <div class="level ">
+                            <span class="info ">{{item.docDateTime}}</span>
+                            <span class="info " style="margin-right: 700px;">阅读量: {{item.docSees}}</span>
+                        </div>
+                    </div>
+                    <div class="tile__buttons m-0">
+                        <button class="btn--sm btn-animated btn-primary" @click="jumpDoc(item)">👉查看</button>
+                        <button class="btn--sm btn-animated btn-info ">编辑</button>
+                        <button class="btn--sm btn-animated btn-info ">删除</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <hr>
+            <div class="pagination pagination-bordered">
+                <div class="pagination-item short"><span class="tag tag--success" style="width: 90px; height: 45px;"
+                        @click="prev">
+                        <h6>上一页</h6>
+                    </span></div>
+                <span v-for="(page, i) in pages">
+                    <div class="pagination-item short"><span class="tag"
+                            :class="{'tag--primary':p==page,'tag--info':p!=page}" v-show="page != -1"
+                            @click="jump(page, i)">
+                            <h6>{{page}}</h6>
+                        </span></div>
+                </span>
+
+                <div class="pagination-item short"><span class="tag tag--success" style="width: 90px; height: 45px;"
+                        @click="next">
+                        <h6>下一页</h6>
+                    </span></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./js/message.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/vue.js"></script>
+<script src="./js/axios-0.18.0.js"></script>
+<script src="./js/kit-fontawsome-com.js" crossorigin="anonymous"></script>
+<script>
+    $('.has-sub').on('click', function (e) { // Get all dropdown menu toggles
+        $('.dropdown-menu').not($(this).children('.dropdown-menu')).removeClass('dropdown-shown'); // Hide all other dropdown menus
+        $('.has-sub').not($(this)).removeClass('active'); // Remove the active selector from the other dropdown toggles
+        $(this).children('.dropdown-menu').toggleClass('dropdown-shown'); // Show/hide the dropdown menu associated with the toggle being clicked
+        $(this).toggleClass('active'); // Toggle the active selector on the nav-item
+    });
+    // Show dropdown when clicked
+    $('#header-btn').on('click', function (e) {
+        $('#MENU_ID_HERE').toggleClass('active');
+        $('.nav-btn').toggleClass('active');
+    });
+
+    // Hide menu after clicking menu item
+    $('.dropdown-menu li').on('click', function (e) {
+        $('#MENU_ID_HERE').removeClass('active');
+        $('.nav-btn').removeClass('active');
+    });
+</script>
+<script>
+    window.QMSG_GLOBALS = {
+        DEFAULTS: {
+            showClose: true,
+            timeout: 5000
+        }
+    };
+    var app = new Vue({
+        el: "#app",
+        data: {
+            baseURL: "http://192.168.1.106:10086",
+            user: {
+                userName: "username",
+                userEmail: "example@email.com",
+                userImg: "/img"
+            },
+            doc: {
+                docId: 0,
+                userEmail: ""
+            },
+            docs: [],
+            p: 1,
+            length: 0, //页数
+            pages: new Array(8), //展示的方块数量
+            index: 0 //0~7
+        },
+        methods: {
+            jumpDoc: function (item) {
+                //alert(item.docId);
+                this.doc.docId = item.docId;
+                this.doc.userEmail = this.user.userEmail;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("doc.html");
+            },
+
+            jumpAddDoc: function () {
+                //alert(this.user.userEmail)
+                this.doc.userEmail = this.user.userEmail;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("edit.html");
+            },
+
+            getDocs: async function () {
+                console.log(this.user.userEmail);
+                await axios({
+                    method: 'GET',
+                    url: this.baseURL + '/docs/all_docs/' + this.user.userEmail
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            //console.log(Result.data);
+                            this.docs = Result.data;
+                            this.init();
+                        } else {
+                            Qmsg.error(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+
+            init: function () {
+                //docs数组的长度转换为页数
+                if (this.docs.length % 4 == 0) {
+                    this.length = (this.docs.length >> 2);
+                } else {
+                    this.length = (this.docs.length >> 2) + 1;
+                }
+                if (this.length == 0) {
+                    for (let i = 0; i < this.pages.length; i++) {
+                        this.pages[i] = -1;
+                    }
+                } else if (this.length <= 8) {
+                    for (let j = 0; j <= this.length - 1; j++) {
+                        this.pages[j] = j + 1;
+                    }
+                    this.pages[7] = this.length;
+                    for (let i = this.length; i < this.pages.length; i++) {
+                        this.pages[i] = -1;
+                    }
+
+
+                } else {
+                    for (let j = 0; j < 6; j++) {
+                        this.pages[j] = j + 1;
+                    }
+                    this.pages[6] = "...";
+                    this.pages[7] = this.length;
+                }
+            },
+            prev: function () {
+                if (this.length >= 8) {
+                    this.prev32();
+                } else {
+                    if (this.p == 1 || this.length == 0) {
+                        Qmsg.info("第一页")
+                    } else {
+                        this.p--;
+                        this.index--;
+                    }
+                }
+            },
+            next: function () {
+                if (this.length >= 8) {
+                    this.next32();
+                } else {
+                    if (this.length == 0 || this.p == this.length) {
+                        Qmsg.info("最后一页")
+                    } else {
+                        this.p++;
+                        this.index++;
+                    }
+                }
+            },
+            next32: function () {
+                if (this.length == 0 || this.p == this.length) {
+                    Qmsg.info("最后一页")
+                } else {
+                    let i = ++this.p;
+                    if (i <= this.length - 2 && this.pages[this.index + 1] != "...") {
+                        this.index++; //5
+                    }
+                    let index = this.index;
+                    if (this.pages[++index] == "..." && this.p != this.length - 1) {
+                        for (let j = 5; j > 1; j--) {
+                            this.pages[j] = i--;
+                        }
+                        this.pages[1] = "..."
+                    } else if (this.p == this.length - 1 || this.p == this.length) {
+                        this.pages[6] = this.length - 1;
+                        this.index++;
+                    }
+
+                }
+            },
+            prev32: function () {
+                if (this.p == 1 || this.length == 0) {
+                    Qmsg.info("第一页")
+                } else {
+                    let i = --this.p;
+                    if (i >= 3 && this.pages[this.index - 1] != "...") {
+                        this.index--;//2
+                    }
+                    let index = this.index;
+                    if (this.pages[--index] == "..." && this.p != 2) {
+                        for (let j = 2; j < 6; j++) {
+                            this.pages[j] = i++;
+                        }
+                        this.pages[6] = "..."
+                    } else if (this.p == 2 || this.p == 1) {
+                        this.pages[1] = 2;
+                        this.index--;
+                    }
+                }
+            },
+            jump: function (page, i) {
+                if (this.length >= 8) {
+                    if (page != "...") {
+                        this.p = page;
+                        this.index = i;
+                        if (this.p == this.length) {
+                            for (let j = 6; j > 1; j--) {
+                                this.pages[j] = --page;
+                            }
+                            this.pages[1] = "..."
+                        }
+                        if (this.p == 1) {
+                            for (let j = 1; j < 6; j++) {
+                                this.pages[j] = ++page;
+                            }
+                            this.pages[6] = "..."
+                        }
+
+                        //发送分页请求
+                        this.requestPage(page);
+                    }
+                } else {
+                    this.p = page;
+                    this.index = i;
+                    //发送分页请求
+                    this.requestPage(page);
+                }
+            },
+            requestPage: function (page) {
+                let rows = 4;
+            }
+        },
+        mounted() {
+            console.info(JSON.parse(localStorage.getItem("result")));
+            let user = JSON.parse(localStorage.getItem("result"));
+            this.user.userName = user.userName;
+            this.user.userEmail = user.userEmail;
+            this.user.userImg = user.userImg;
+
+            this.getDocs();
+        }
+    });
+    function jumpAddDoc() {
+        this.app.jumpAddDoc();
+    }
+</script>
+
+</html>
