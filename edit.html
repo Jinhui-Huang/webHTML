@@ -102,15 +102,15 @@
 
     <div class="frame" id="app">
         <div class="frame__header">
-            <input type="text" class="u-text-center input--lg" placeholder="*输入文章标题(必填)"
-                v-model="doc.docTitle"></input>
+            <input type="text" class="u-text-center input--lg" placeholder="*输入文章标题(必填)" v-model="doc.docTitle"></input>
             <input type="text" class="tile__subtitle m-0 " placeholder="*输入文章描述(必填)"
                 v-model="doc.docDescription"></input>
             <div style="padding-top: 10px;"></div>
             <div>
                 <span v-for="(item, i) in tags">
                     <div class="tag tag--primary" :class="arr[i % 6]">{{item}}</div>
-                    <ion-icon name="close-circle-outline" style="margin-right: 10px;" @click="deleteTag(item)"></ion-icon>
+                    <ion-icon name="close-circle-outline" style="margin-right: 10px;"
+                        @click="deleteTag(item)"></ion-icon>
 
                 </span>
                 <input type="text" class="tag tag--rounded" id="inputTag" @keyup.enter="addTag" placeholder="添加tag"
@@ -135,7 +135,8 @@
                 <span style="margin-left: 300px;" class="col-xs-4 level-item">
                     <input type="file" style="width: 400px" id="inputFile"
                         accept="image/gif,image/jpeg,image/jpg,image/png">
-                    <input type="submit" class="btn-link pull-right" @click="upLoadFile" style="width: 100px;" value="上传文件"></input>
+                    <input type="submit" class="btn-link pull-right" @click="upLoadFile" style="width: 100px;"
+                        value="上传文件"></input>
                 </span>
             </span>
 
@@ -265,9 +266,12 @@
                 let pat = "/!\\[.*\\]\\(.*" + imgName + "\\." + imgType + "\\)/g";
                 console.log(pat);
                 let pattern = eval(pat);
-                this.doc.docContext = this.doc.docContext.replace(pattern, "![" + imgName + "](" + this.imgUrl + ")");
-                content.innerHTML = marked.parse(this.doc.docContext);
-                hljs.initHighlighting();
+                if (this.isShow == false &&
+                    this.isEdit == true) {
+                    this.doc.docContext = this.doc.docContext.replace(pattern, "![" + imgName + "](" + this.imgUrl + ")");
+                    content.innerHTML = marked.parse(this.doc.docContext);
+                    hljs.initHighlighting();
+                }
 
             },
             upLoadFile: function () {
@@ -309,7 +313,7 @@
                     }
                 } else {
                     inputFile.value = "";
-                    Qmsg.warning("文章内容不能为空");
+                    Qmsg.warning("文章内容描述和标题不能为空");
                 }
             }
 

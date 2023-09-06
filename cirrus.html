@@ -57,7 +57,7 @@
                     <a class="nav-dropdown-link">管理内容</a>
                     <ul class="dropdown-menu dropdown-animated" role="menu">
                         <li role="menu-item"><a href="#" onclick="jumpAddDoc()">发布文章</a></li>
-                        <li role="menu-item"><a href="my-doc.html" >我的文章</a></li>
+                        <li role="menu-item"><a href="my-doc.html">我的文章</a></li>
                         <li role="menu-item"><a href="#">查看数据</a></li>
                     </ul>
                 </div>
@@ -72,7 +72,7 @@
 
             <div class="nav-right">
                 <div class="nav-item active">
-                    <a href="#">收藏</a>
+                    <a href="collection.html">收藏</a>
                 </div>
                 <div class="nav-item has-sub " id="dropdown">
                     <a class="nav-dropdown-link">个人中心</a>
@@ -83,7 +83,7 @@
                         <li role="menu-item"><a href="#">外观</a></li>
                         <li class="dropdown-menu-divider"></li>
                         <li role="menu-item"><a href="#">欢迎来到个人中心</a></li>
-                        <li role="menu-item"><a href="login.html">退出登陆</a></li>
+                        <li role="menu-item"><a href="#" onclick="logOut()">退出登陆</a></li>
                     </ul>
                 </div>
             </div>
@@ -175,7 +175,7 @@
 
         <div class="grid-c-9 grid-r-12 frame g">
             <br>
-            <h3 class="headline-4 uppercase"> 
+            <h3 class="headline-4 uppercase">
                 <b>每日博客</b><span class="desc"><code>每日博客</code></span>
             </h3>
             <br>
@@ -188,19 +188,20 @@
                     </div>
 
                     <div class="tile__container u-overflow-hidden" style="text-align: left;">
-                        <p class="tile__title m-0 u-text-no-wrap">{{item[1].userName}} 分享了一篇博客:<b> {{item[0].docTitle}}</b>.
+                        <p class="tile__title m-0 u-text-no-wrap">{{item[1].userName}} 分享了一篇博客:<b>
+                                {{item[0].docTitle}}</b>.
                         </p>
                         <p class="tile__subtitle m-0">{{item[0].docDescription}}</p>
                         <div class="level ">
                             <span class="info ">{{item[0].docDateTime}}</span>
                             <span class="info " style="margin-right: 600px;">阅读量: {{item[0].docSees}}</span>
                         </div>
-                        
+
                     </div>
                     <div class="tile__buttons m-0">
                         <button class="btn--sm btn-animated btn-primary" @click="jumpDoc(item)">👉查看</button>
-                        <button class="btn--sm uppercase btn-animated btn-primary tooltip"
-                            data-tooltip="👍👍👍">👍点赞</button>
+                        <button class="btn--sm uppercase btn-animated btn-primary tooltip" data-tooltip="👍👍👍"
+                            @click="like(item[0])">👍点赞</button>
                     </div>
                 </div>
             </div>
@@ -232,7 +233,8 @@
         <div class="grid-c-3 grid-r-11 card card--slide-up">
             <div class="card__container">
                 <div class="card__image"
-                    style="background-image: url(&quot;https://tuapi.eees.cc/api.php?category=dongman&type=302&amp;blur&quot;);"></div>
+                    style="background-image: url(&quot;https://tuapi.eees.cc/api.php?category=dongman&type=302&amp;blur&quot;);">
+                </div>
             </div>
             <div class="card__mobile-title">
                 <div class="content">
@@ -248,14 +250,15 @@
                 <p>Located two hours south of Sydney in the Southern Highland of New South Wales...</p>
             </div>
             <div class="card__footer content">2 min. read 22 comments</div>
-            
+
         </div>
 
         <div class="grid-c-3 grid-r-11 card card--slide-up">
             <div class="card__container">
                 <div class="card__image"
-                    style="background-image: url(&quot;https://tuapi.eees.cc/api.php?category=dongman&px=m&type=302&amp;blur&quot;)"></div>
-                    <!-- https://img.xjh.me/random_img.php -->
+                    style="background-image: url(&quot;https://tuapi.eees.cc/api.php?category=dongman&px=m&type=302&amp;blur&quot;)">
+                </div>
+                <!-- https://img.xjh.me/random_img.php -->
             </div>
             <div class="card__mobile-title">
                 <div class="content">
@@ -294,13 +297,13 @@
             </div>
             <div class="card__footer content">2 min. read 22 comments</div>
         </div>
-      
+
         <div class="grid-c-12 grid-r-12 g" id="footer">
             <footer class="footer">
                 <h6 class="footer__title text-white uppercase">MYHD</h6>
                 <div class="content">
                     <div class="divider"></div>
-        
+
                     <div class="row">
                         <div class="col-4">
                             <ul class="no-bullets">
@@ -394,14 +397,18 @@
             user: {
                 userName: "username",
                 userEmail: "example@email.com",
-                userImg: "/img"
+                userImg: "/img",
             },
             doc: {
                 docId: 0,
                 userEmail: ""
             },
             docs: [],
-            img: [1, 2, 3, 4]
+            img: [1, 2, 3, 4],
+            judgeLogin: {
+                login: false,
+                count: 0
+            }
         },
         methods: {
             getDocs: async function () {
@@ -427,21 +434,63 @@
                     });
             },
             init: function () {
-                Qmsg.success("登陆成功");
-                console.info(JSON.parse(localStorage.getItem("result")));
-                let user = JSON.parse(localStorage.getItem("result"));
-                this.user.userName = user.userName;
-                this.user.userEmail = user.userEmail;
-                this.user.userImg = user.userImg;
+                //console.info(JSON.parse(localStorage.getItem("result")));
+                this.judgeLogin = JSON.parse(localStorage.getItem("judgeLogin"));
+                if (this.judgeLogin.login) {
+                    let user = JSON.parse(localStorage.getItem("result"));
+                    this.user.userName = user.userName;
+                    this.user.userEmail = user.userEmail;
+                    this.user.userImg = user.userImg;
+                    this.getDocs();
+                    if (this.judgeLogin.count == 1) {
+                        Qmsg.success("登陆成功");
+                        this.judgeLogin.count = 0;
+                        localStorage.setItem("judgeLogin", JSON.stringify(this.judgeLogin));
+                    }
+                } else {
+                    Qmsg.info("请登陆访问");
+                }
+
+            },
+            logOut: function() {
+                this.judgeLogin.login = false
+                localStorage.setItem("judgeLogin", JSON.stringify(this.judgeLogin));
+                window.location.href="login.html";
+            },
+            like: function(item) {
+                axios({
+                    method: 'PUT',
+                    url: this.baseURL + '/doc_info/click',
+                    data: {
+                        userEmail: this.user.userEmail,
+                        docId: item.docId
+                    }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20011) {
+                            //console.log(Result.data);
+                            Qmsg.success(msg)
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
             },
             jumpDoc: function (item) {
                 //alert(item.docId);
                 this.doc.docId = item[0].docId;
                 this.doc.userEmail = item[0].userEmail;
                 sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                sessionStorage.setItem("user", JSON.stringify(this.user));
                 window.open("doc.html");
             },
-            jumpAddDoc: function() {
+            jumpAddDoc: function () {
                 //alert(this.user.userEmail)
                 this.doc.userEmail = this.user.userEmail;
                 sessionStorage.setItem("doc", JSON.stringify(this.doc));
@@ -450,12 +499,14 @@
         },
         mounted() {
             this.init();
-            this.getDocs();
         }
     });
-function jumpAddDoc() {
-    this.app.jumpAddDoc();
-}
+    function jumpAddDoc() {
+        this.app.jumpAddDoc();
+    }
+    function logOut() {
+        this.app.logOut();
+    }
 </script>
 
 </html>

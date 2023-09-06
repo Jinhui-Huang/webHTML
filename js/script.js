@@ -43,6 +43,10 @@ var app = new Vue({
             msg: "",
             data: {}
         },
+        judgeLogin: {
+            login: true,
+            count: 1
+        },
         checked: false
     },
     methods: {
@@ -66,6 +70,7 @@ var app = new Vue({
                         if (code == 20041) {
                             Qmsg.success(msg);
                             localStorage.setItem("result", JSON.stringify(Result.data));
+                            localStorage.setItem("judgeLogin", JSON.stringify(this.judgeLogin));
                             window.location.href = "cirrus.html"
                         } else {
                             Qmsg.error(msg);

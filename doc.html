@@ -120,13 +120,13 @@
             </div>
             <div id="btn">
 
-                <button class="btn-animated btn-primary" @click="collection" v-if="enabledSee">
-                    <ion-icon name="heart-outline"></ion-icon>收藏
+                <button class="btn-animated btn-primary" @click="collection" v-if="enabledSee" style="width: 120px;">
+                    <ion-icon name="heart-outline"></ion-icon>取消收藏
                 </button>
                 <button class="btn-animated" @click="collection" v-if="!enabledSee">
                     <ion-icon name="heart-outline"></ion-icon>收藏
                 </button>
-                <button class="btn-primary btn-animated tooltip" data-tooltip="👍👍👍+1" @click="click">
+                <button class="btn-primary btn-animated tooltip" data-tooltip="👍👍👍+1" @click="like()">
                     👍点赞
                 </button>
             </div>
@@ -167,6 +167,11 @@
             user: {
                 userEmail: "",
                 userName: ""
+            },
+            loginUser: {
+                userName: "username",
+                userEmail: "example@email.com",
+                userImg: "/img"
             },
             doc: {
                 docId: 0,
@@ -215,18 +220,69 @@
                 console.info(docTemp);
                 this.doc.docId = docTemp.docId;
                 this.user.userEmail = docTemp.userEmail;
+
+                this.loginUser = JSON.parse(sessionStorage.getItem("user"));
+
                 await this.getDoc();
                 content.innerHTML = marked.parse(t.value);
                 hljs.initHighlighting();
+
+                this.getIsCollect();
+
             },
             collection: function () {
-                this.enabledSee = !this.enabledSee;
-                if (this.enabledSee) {
-                    Qmsg.success("收藏成功")
-                } else {
-                    Qmsg.info("已取消收藏")
-                }
+                this.getIsCollect();
+                axios({
+                    method: 'PUT',
+                    url: this.baseURL + '/doc_info/collection',
+                    data: {
+                        userEmail: this.loginUser.userEmail,
+                        docId: this.doc.docId
+                    }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20011) {
+                            //console.log(Result.data[0]);
+                            this.enabledSee = Result.data;
+                            Qmsg.success(msg);
+                        } else {
+                            this.enabledSee = Result.data;
+                            Qmsg.warning(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
 
+            },
+            getIsCollect: function () {
+                axios({
+                    method: 'POST',
+                    url: this.baseURL + '/doc_info/collection/enabled',
+                    data: {
+                        userEmail: this.loginUser.userEmail,
+                        docId: this.doc.docId
+                    }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            //console.log(Result.data[0]);
+                            this.enabledSee = Result.data;
+                        } else {
+                            console.log(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
             },
             sleep: function (time) {
                 var timeStamp = new Date().getTime();
@@ -237,27 +293,37 @@
                     }
                 }
             },
-            click: function () {
-                let time1 = localStorage.getItem("time")
-                let time2 = Date.now();
-                if (time1 != null) {
-                    if (time2 - time1 > 3600000) {
-                        Qmsg.success("已点赞");
-                        localStorage.setItem("time", time2);
-                    } else {
-                        Qmsg.info("1小时后可再次点赞")
+            like: function () {
+                axios({
+                    method: 'PUT',
+                    url: this.baseURL + '/doc_info/click',
+                    data: {
+                        userEmail: this.loginUser.userEmail,
+                        docId: this.doc.docId
                     }
-                } else {
-                    let time = Date.now();
-                    localStorage.setItem("time", time);
-                    this.click();
-                }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20011) {
+                            //console.log(Result.data);
+                            Qmsg.success(msg)
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
             }
         },
         mounted() {
             this.show();
             clearInterval(this.timer)
             this.timer = null
+            /* 增加阅读量 */
             this.timer = setTimeout(() => {
                 axios({
                     method: 'GET',

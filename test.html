@@ -18,8 +18,26 @@
     <link rel="stylesheet" href="./css/message.min.css">
 </head>
 
+
 <body>
     <div id="app">
+        <button @click="showLi">init</button><br>
+
+        <select name="name" id="" style="width: 200px; text-align: center;" @change=chooseCore($event)>
+            <option value="-1">---请选择---</option>
+            <option v-for="(item,i) in arr" :value="item.writer" 
+             v-if="i<3" >{{item.writer}}</option>
+
+        </select>
+
+        <select name="name" id="" style="width: 200px; text-align: center;">
+            <option value="-1">---请选择---</option>
+            <option value="writer">{{man}}</option>
+        </select>
+
+        <ol v-if="isShow">
+            <li v-for="(item,i) in arr" @click="show(item)" >{{item.writer}}</li>
+        </ol>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -32,12 +50,41 @@
     var app = new Vue({
         el: "#app",
         data: {
-            baseURL: "http://192.168.1.106:10086",
-
+            baseURL: "http://iwenwiki.com/api/blueberrypai/getIndexInteresting.php",
+            arr: [],
+            man: "",
+            imgUrl: "",
+            isShow: false
         },
         methods: {
-
-        }
+            init: function () {
+                axios({
+                    method: "get",
+                    url: this.baseURL
+                }).then(response => {
+                    Result = response.data;
+                    this.arr = Result.interesting;
+                    this.imgUrl = Result.titleImg;
+                    console.log(this.arr);
+                }, error => {
+                    Qmsg.warning(error.msg);
+                })
+            },
+            show: function(item) {
+                this.man = item;
+                console.log(this.man);
+            },
+            showLi: function() {
+                this.isShow = true;
+            },
+            chooseCore: function(event) {
+                this.man = event.target.value;
+                console.log(event.target.value);
+            }
+        },
+        mounted() {
+            this.init();
+        },
     })
 </script>
 

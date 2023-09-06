@@ -11,10 +11,19 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
     <!-- Minified Cirrus CSS -->
     <link rel="stylesheet" href="css/dist/cirrus-all.min.css"> <!-- Or use CDN link -->
-    <link rel="stylesheet" href="./css/cirrus.css">
     <style>
+        .form-group {
+            width: 550px;
+            opacity: 0.8;
+        }
+
+        .header {
+            background-color: #02bcff;
+            height: auto;
+        }
+
         body {
-            background: linear-gradient(-45deg, #44ff6d, #81f2f6);
+            background: linear-gradient(-45deg, #55ff4f, #35f8ff);
             background-size: 600% 600%;
 
             animation: gradientBG 5s ease infinite;
@@ -34,10 +43,134 @@
             }
 
         }
+
+        .grid {
+            width: 100%;
+            height: 690px;
+        }
+
+        .tile {
+            padding: 20px;
+            background-color: #7af4fff0;
+            float: left;
+            opacity: 0.9;
+            box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            border-left: 1px solid rgba(255, 173, 173, 0.5);
+            backdrop-filter: blur(6px);
+            margin-top: 15px;
+        }
+
+        #app {
+            margin-top: 60px;
+            padding: 15px;
+        }
     </style>
 </head>
 
 <body>
+    <div class="header header-fixed u-unselectable header-animated">
+        <div class="header-brand">
+            <div class="nav-item no-hover">
+                <a>
+                    <h6 class="title hover-grow">MYHD</h6>
+                </a>
+            </div>
+            <div class="nav-item nav-btn" id="header-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="header-nav" id="header-menu">
+            <div class="nav-left">
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-github" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-youtube" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-twitter" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item has-sub" id="dropdown">
+                    <a class="nav-dropdown-link">管理内容</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#" onclick="jumpAddDoc()">发布文章</a></li>
+                        <li role="menu-item"><a href="my-doc.html">我的文章</a></li>
+                        <li role="menu-item"><a href="#">查看数据</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="nav-center">
+                <div class="form-group">
+                    <input type="search" class="form-group-input input--xs" placeholder="Search" />
+                    <button class="form-group-btn">搜索</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <div class="nav-item active">
+                    <a href="cirrus.html">主页</a>
+                </div>
+                <div class="nav-item has-sub " id="dropdown">
+                    <a class="nav-dropdown-link">个人中心</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#">好友</a></li>
+                        <li role="menu-item"><a href="#">隐私</a></li>
+                        <li role="menu-item"><a href="#">订阅</a></li>
+                        <li role="menu-item"><a href="#">外观</a></li>
+                        <li class="dropdown-menu-divider"></li>
+                        <li role="menu-item"><a href="#">欢迎来到个人中心</a></li>
+                        <li role="menu-item"><a href="login.html">退出登陆</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-c-12 grid-r-12 frame" id="app">
+        <div class="tile u-items-center" v-for="item in docs">
+            <div class="tile__icon">
+                <figure class="avatar"><img :src="item.userImg"></figure>
+            </div>
+            <div class="tile__container u-overflow-hidden " style="text-align: left;">
+                <p class="tile__title m-0 u-text-no-wrap level">
+                    <b>{{item.docTitle}}</b>
+                    <span class="level" style="margin-right: 675px;"><span class="info">作者: {{item.userName}}</span>
+                        <span class="info " style="margin-left: 15px;">{{item.docDateTime}}</span>
+                    </span>
+
+                </p>
+
+                <p class="tile__subtitle m-0">{{item.docDescription}}</p>
+                <div class="level ">
+                    <span class="info ">收藏时间:{{item.collectionDateTime}}</span>
+                    <span class="info " style="margin-right: 750px;">阅读量: {{item.docSees}}</span>
+                </div>
+            </div>
+            <div class="tile__buttons m-0">
+                <button class="btn--sm btn-animated btn-primary" @click="jumpDoc(item)">👉查看</button>
+                <button class="btn--sm btn-animated btn-primary" @click="collection(item)">取消收藏</button>
+                <button class="btn--sm uppercase btn-animated btn-link tooltip" data-tooltip="👍👍👍" @click="like(item)">👍点赞</button>
+            </div>
+        </div>
+    </div>
 
 </body>
 <script src="./js/message.min.js"></script>
@@ -63,6 +196,128 @@
         $('#MENU_ID_HERE').removeClass('active');
         $('.nav-btn').removeClass('active');
     });
+</script>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            baseURL: "http://192.168.1.106:10086",
+            user: {
+                userName: "username",
+                userEmail: "example@email.com",
+                userImg: "/img"
+            },
+            doc: {
+                docId: 0,
+                userEmail: ""
+            },
+            docs: [],
+        },
+        methods: {
+            jumpDoc: function (item) {
+                //alert(item.docId);
+                this.doc.docId = item.docId;
+                this.doc.userEmail = item.userEmail;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("doc.html");
+            },
+
+            jumpAddDoc: function () {
+                //alert(this.user.userEmail)
+                this.doc.userEmail = this.user.userEmail;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("edit.html");
+            },
+
+            collection: function (item) {
+                axios({
+                    method: 'PUT',
+                    url: this.baseURL + '/doc_info/collection',
+                    data: {
+                        userEmail: this.user.userEmail,
+                        docId: item.docId
+                    }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            //console.log(Result.data[0]);
+                            Qmsg.info(msg);
+                            this.getDocs();
+                        } else {
+                            Qmsg.info(msg);
+                            location.reload();
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+
+            },
+            like: function (item) {
+                axios({
+                    method: 'PUT',
+                    url: this.baseURL + '/doc_info/click',
+                    data: {
+                        userEmail: this.user.userEmail,
+                        docId: item.docId
+                    }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20011) {
+                            //console.log(Result.data);
+                            Qmsg.success(msg)
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            getDocs: async function () {
+                console.log(this.user.userEmail);
+                await axios({
+                    method: 'GET',
+                    url: this.baseURL + '/doc_info/collection/' + this.user.userEmail
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            //console.log(Result.data);
+                            this.docs = Result.data;
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            }
+        },
+        mounted() {
+            console.info(JSON.parse(localStorage.getItem("result")));
+            let user = JSON.parse(localStorage.getItem("result"));
+            this.user.userName = user.userName;
+            this.user.userEmail = user.userEmail;
+            this.user.userImg = user.userImg;
+
+            this.getDocs();
+        }
+    });
+    function jumpAddDoc() {
+        this.app.jumpAddDoc();
+    }
 </script>
 
 </html>

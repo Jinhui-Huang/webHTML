@@ -121,6 +121,9 @@
             </div>
 
             <div class="nav-right">
+                <div class="nav-item">
+                    <a href="collection.html">收藏</a>
+                </div>
                 <div class="nav-item active">
                     <a href="cirrus.html">主页</a>
                 </div>
@@ -218,8 +221,9 @@
             <hr>
             <hr>
             <div class="pagination pagination-bordered">
-                <div class="pagination-item short"><span class="tag tag--success" style="width: 90px; height: 45px;"
-                        @click="prev">
+                <div class="pagination-item short ">
+                    <span class="tag tag--success" style="width: 90px; height: 45px;"
+                        @click="prev" >
                         <h6>上一页</h6>
                     </span></div>
                 <span v-for="(page, i) in pages">
@@ -285,7 +289,7 @@
             docs: [],
             p: 1,
             length: 0, //页数
-            pages: new Array(8), //展示的方块数量
+            pages: [-1, -1, -1, -1, -1, -1, -1, -1], //展示的方块数量
             index: 0 //0~7
         },
         methods: {
@@ -320,7 +324,7 @@
                             this.docs = Result.data;
                             this.init();
                         } else {
-                            Qmsg.error(msg);
+                            Qmsg.info(msg);
                         }
                     }, error => {
                         console.log('错误', error.message);
@@ -329,11 +333,13 @@
             },
 
             init: function () {
-                //docs数组的长度转换为页数
-                if (this.docs.length % 4 == 0) {
-                    this.length = (this.docs.length >> 2);
-                } else {
-                    this.length = (this.docs.length >> 2) + 1;
+                this.length = this.docs.length;
+                if (this.length != 0) {
+                    if (this.docs.length % 4 == 0) {
+                        this.length = (this.docs.length >> 2);
+                    } else {
+                        this.length = (this.docs.length >> 2) + 1;
+                    }
                 }
                 if (this.length == 0) {
                     for (let i = 0; i < this.pages.length; i++) {
