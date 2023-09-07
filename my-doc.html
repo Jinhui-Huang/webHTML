@@ -59,8 +59,20 @@
         .pagination-item span {
             width: 50px;
             height: 45px;
-
             margin-left: 5px;
+        }
+
+        .cardT {
+            width: 200px;
+            text-align: center;
+            color: #000000;
+            border-radius: .25rem;
+            opacity: 0.8;
+            box-shadow: 20px 20px 50px rgba(255, 150, 206, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(6px);
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -108,7 +120,7 @@
                     <a class="nav-dropdown-link">管理内容</a>
                     <ul class="dropdown-menu dropdown-animated" role="menu">
                         <li role="menu-item"><a href="#" onclick="jumpAddDoc()">发布文章</a></li>
-                        <li role="menu-item"><a href="#">查看数据</a></li>
+                        <li role="menu-item"><a href="my-doc-data.html">查看数据</a></li>
                     </ul>
                 </div>
 
@@ -151,37 +163,31 @@
                     <h6 class="u-text-center frame__title">{{user.userName}}</h6>
                     <p class="u-text-center frame__subtitle">Explostion!!!</p>
                     <div class="tab-container tabs-fill">
-                        <ul>
-                            <li class="tab-item" style="opacity: 0.6;"><a>文章数据</a></li>
-                        </ul>
                     </div>
                 </div>
 
                 <div class="frame__body">
-                    <ul class="menu">
-                        <li class="menu-item">
-                            <div class="tile level c tag tag--link">
-                                <div class="tile__container">
-                                    <p class="tile__title">文章总数量📃: {{this.docs.length}}</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="tile level c tag tag--primary">
-                                <div class="tile__container">
-                                    <p class="tile__title">文章总阅读量👀: </p>
-                                </div>
-                            </div>
-                        </li>
+                    <div class="cardT">
+                        <div class="card__header">
+                            <p class="font-bold px-5">文章总数量📃</p>
+                        </div>
+                        <div class="content c">
+                            <p>你目前为止已经发布了</p>
+                            <a class="tag tag--info tooltip" data-tooltip="点击查看" href="my-doc-data.html">{{this.docs.length}}篇文章</a>
+                        </div>
+                        <div class="card__footer content c">6:32 PM - 3 Jul 18</div>
+                    </div>
 
-                        <li class="menu-item">
-                            <div class="tile level c tag tag--info">
-                                <div class="tile__container">
-                                    <p class="tile__title">文章总点赞数👍: 12</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                    <div class="cardT">
+                        <div class="card__header">
+                            <p class="font-bold px-5">订阅用户数➕</p>
+                        </div>
+                        <div class="content c">
+                            <p>你目前为止已经被</p>
+                            <p class="tag tag--info tooltip" data-tooltip="点击查看">0 名用户订阅</p>
+                        </div>
+                        <div class="card__footer content c">6:32 PM - 3 Jul 18</div>
+                    </div>
 
                 </div>
             </div>
@@ -208,7 +214,6 @@
                         <p class="tile__subtitle m-0">{{item.docDescription}}</p>
                         <div class="level ">
                             <span class="info ">{{item.docDateTime}}</span>
-                            <span class="info " style="margin-right: 700px;">阅读量: {{item.docSees}}</span>
                         </div>
                     </div>
                     <div class="tile__buttons m-0">
@@ -222,10 +227,10 @@
             <hr>
             <div class="pagination pagination-bordered">
                 <div class="pagination-item short ">
-                    <span class="tag tag--success" style="width: 90px; height: 45px;"
-                        @click="prev" >
+                    <span class="tag tag--success" style="width: 90px; height: 45px;" @click="prev">
                         <h6>上一页</h6>
-                    </span></div>
+                    </span>
+                </div>
                 <span v-for="(page, i) in pages">
                     <div class="pagination-item short"><span class="tag"
                             :class="{'tag--primary':p==page,'tag--info':p!=page}" v-show="page != -1"

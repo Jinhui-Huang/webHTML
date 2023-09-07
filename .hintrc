@@ -4,6 +4,35 @@
   ],
   "hints": {
     "axe/forms": "off",
-    "axe/text-alternatives": "off"
-  }
+    "axe/text-alternatives": "off",
+    "axe/aria": [
+      "default",
+      {
+        "aria-roles": "off",
+        "aria-required-children": "off"
+      }
+    ],
+    "axe/structure": [
+      "default",
+      {
+        "list": "off"
+      }
+    ],
+    "meta-viewport": "off",
+    "no-inline-styles": "off",
+    "axe/language": [
+      "default",
+      {
+        "html-has-lang": "off"
+      }
+    ]
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not and_ff <= 116",
+    "not firefox <= 117",
+    "not ios_saf <= 16.5",
+    "not safari <= 16.5"
+  ]
 }

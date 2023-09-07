@@ -19,27 +19,7 @@
 </head>
 
 
-<body>
-    <div id="app">
-        <button @click="showLi">init</button><br>
 
-        <select name="name" id="" style="width: 200px; text-align: center;" @change=chooseCore($event)>
-            <option value="-1">---请选择---</option>
-            <option v-for="(item,i) in arr" :value="item.writer" 
-             v-if="i<3" >{{item.writer}}</option>
-
-        </select>
-
-        <select name="name" id="" style="width: 200px; text-align: center;">
-            <option value="-1">---请选择---</option>
-            <option value="writer">{{man}}</option>
-        </select>
-
-        <ol v-if="isShow">
-            <li v-for="(item,i) in arr" @click="show(item)" >{{item.writer}}</li>
-        </ol>
-    </div>
-</body>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
 <script src="js/vue.js"></script>

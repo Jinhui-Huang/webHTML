@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/message.min.css">
+    <!-- Google Fonts -->
+    <!--     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> -->
+    <!-- Minified Cirrus CSS -->
+    <link rel="stylesheet" href="css/dist/cirrus-all.min.css"> <!-- Or use CDN link -->
+    <link rel="stylesheet" href="css/cirrus.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #54d1ff, #19f1bf);
+            background-size: 600%;
+            animation: gradientBG 5s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .card {
+            margin-left: 15px;
+            text-align: center;
+        }
+
+        .card__header {
+            padding-left: 25%;
+        }
+
+        .grid-r-1 {
+            margin-right: 10px;
+            height: 200px;
+        }
+
+        .grid-r-8 {
+            height: 500px;
+        }
+
+        .grid-r-4 {
+            margin-left: 20px;
+            width: 48%;
+            height: 335px;
+            opacity: 0.9;
+        }
+
+        #tag .tag {
+            width: 220px;
+            height: 220px;
+            border-radius: 25px;
+            font-size: 30px;
+            font-weight: bolder;
+            opacity: 0.7;
+        }
+
+        h1 {
+            font-size: 50px;
+            margin-left: 15%;
+            font-weight: bolder;
+            opacity: 0.9;
+        }
+
+        h4 {
+            width: auto;
+            height: 60px;
+            padding-top: 15px;
+            border-radius: 15px;
+            background-color: rgb(255, 90, 90);
+            color: white;
+            opacity: 0.9;
+        }
+
+        #app {
+            margin-top: 0px;
+            height: 600px;
+        }
+        .grid {
+            margin-top: 0px;
+            margin-bottom: -1460px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header header-fixed u-unselectable header-animated">
+        <div class="header-brand">
+            <div class="nav-item no-hover">
+                <a>
+                    <h6 class="title hover-grow">MYHD</h6>
+                </a>
+            </div>
+            <div class="nav-item nav-btn" id="header-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="header-nav" id="header-menu">
+            <div class="nav-left">
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-github" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-youtube" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item text-center">
+                    <a href="#">
+                        <span class="icon">
+                            <i class="fab fa-wrapper fa-twitter" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-item has-sub" id="dropdown">
+                    <a class="nav-dropdown-link">管理内容</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#" onclick="jumpAddDoc()">发布文章</a></li>
+                        <li role="menu-item"><a href="my-doc.html">我的文章</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="nav-center">
+                <div class="form-group">
+                    <input type="search" class="form-group-input input--xs" placeholder="Search" />
+                    <button class="form-group-btn">搜索</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <div class="nav-item">
+                    <a href="collection.html">收藏</a>
+                </div>
+                <div class="nav-item active">
+                    <a href="cirrus.html">主页</a>
+                </div>
+                <div class="nav-item has-sub " id="dropdown">
+                    <a class="nav-dropdown-link">个人中心</a>
+                    <ul class="dropdown-menu dropdown-animated" role="menu">
+                        <li role="menu-item"><a href="#">好友</a></li>
+                        <li role="menu-item"><a href="#">隐私</a></li>
+                        <li role="menu-item"><a href="#">订阅</a></li>
+                        <li role="menu-item"><a href="#">外观</a></li>
+                        <li class="dropdown-menu-divider"></li>
+                        <li role="menu-item"><a href="#">欢迎来到个人中心</a></li>
+                        <li role="menu-item"><a href="login.html">退出登陆</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app">
+
+        <div class="grid">
+            <div class="grid-c-3 grid-r-1 u-gap-2 card card--slide-up">
+                <div class="card__header">
+                    <p class="font-bold px-5 ">文章总数量📃</p>
+                </div>
+                <div class="content c">
+                    <p>你目前为止已经发布了:
+                        <span class="tag tag--primary">
+                            {{docData.docNum}} 篇文章
+                        </span>
+                    <p>按文章综合评分排序
+                        <span class="tag tag--link" @click="sortDataByScore(80001)">
+                            升序
+                        </span>
+                        <span class="tag tag--info" @click="sortDataByScore(80000)">
+                            降序
+                        </span>
+                    </p>
+                    </p>
+                </div>
+                <div class="card__footer content c">6:32 PM - 3 Jul 18</div>
+            </div>
+
+            <div class="grid-c-3 grid-r-1 u-gap-2 card card--slide-up">
+                <div class="card__header">
+                    <p class="font-bold px-5">文章总阅读量🔖</p>
+                </div>
+                <div class="content c">
+                    <p>你的文章已被阅读:
+                        <span class="tag tag--primary">
+                            {{docData.docAllSees}} 次
+                        </span>
+                    </p>
+                    <p>按文章阅读量排序
+                        <span class="tag tag--link" @click="sortDataBySee(50001)">
+                            升序
+                        </span>
+                        <span class="tag tag--info" @click="sortDataBySee(50000)">
+                            降序
+                        </span>
+                    </p>
+                </div>
+                <div class="card__footer content c">6:32 PM - 3 Jul 18</div>
+            </div>
+
+            <div class="grid-c-3 grid-r-1 u-gap-2 card card--slide-up">
+                <div class="card__header">
+                    <p class="font-bold px-5">文章总收藏量❤️</p>
+                </div>
+                <div class="content c">
+                    <p>你的文章已被收藏:
+                        <span class="tag tag--primary">
+                            {{docData.docAllCollections}} 次
+                        </span>
+                    </p>
+                    <p>按文章收藏量排序
+                        <span class="tag tag--link" @click="sortDataByCollection(60001)">
+                            升序
+                        </span>
+                        <span class="tag tag--info" @click="sortDataByCollection(60000)">
+                            降序
+                        </span>
+                    </p>
+                </div>
+                <div class="card__footer content c">6:32 PM - 3 Jul 18</div>
+            </div>
+
+            <div class="grid-c-3 grid-r-1 u-gap-2  card card--slide-up">
+                <div class="card__header">
+                    <p class="font-bold px-5">文章总点赞量👍</p>
+                </div>
+                <div class="content c">
+                    <p>你的文章已被点赞:
+                        <span class="tag tag--primary">
+                            {{docData.docAllClicks}} 次
+                        </span>
+                    </p>
+                    <p>按文章点赞量排序
+                        <span class="tag tag--link" @click="sortDataByClick(70001)">
+                            升序
+                        </span>
+                        <span class="tag tag--info" @click="sortDataByClick(70000)">
+                            降序
+                        </span>
+                    </p>
+                </div>
+                <div class="card__footer content c">6:32 PM - 3 Jul 18</div>
+            </div>
+        </div>
+        <div class="grid-c-6 grid-r-4 card card__image" v-for="item in docs">
+            <div class="card__container">
+                <div class="card__image"
+                    style="background-image: url(&quot;https://api.yimian.xyz/img?type=moe&amp;blur&quot;);">
+                    <div class="tile">
+                        <div class="tile__icon">
+                            <figure class="avatar"><img :src="user.userImg"></figure>
+                        </div>
+                        <div class="tile__container">
+                            <h4 class="tile__title ">《{{item.docTitle}}》</h4>
+                        </div>
+
+                    </div>
+                    <div id="tag">
+                        <span class="tag tag--info">
+                            <h1>{{item.docSees == null ? 0 : item.docSees}} <br>阅读量
+                            </h1>
+                        </span>
+                        <span class="tag tag--link">
+                            <h1>{{item.collections == null ? 0 : item.collections}} <br>收藏量</h1>
+                        </span>
+                        <span class="tag tag--success">
+                            <h1>{{item.clicks == null ? 0 : item.clicks}} <br>点赞量</h1>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+<script src="./js/kit-fontawsome-com.js" crossorigin="anonymous"></script>
+<script src="./js/message.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/vue.js"></script>
+<script src="./js/axios-0.18.0.js"></script>
+<script>
+    $('.has-sub').on('click', function (e) { // Get all dropdown menu toggles
+        $('.dropdown-menu').not($(this).children('.dropdown-menu')).removeClass('dropdown-shown'); // Hide all other dropdown menus
+        $('.has-sub').not($(this)).removeClass('active'); // Remove the active selector from the other dropdown toggles
+        $(this).children('.dropdown-menu').toggleClass('dropdown-shown'); // Show/hide the dropdown menu associated with the toggle being clicked
+        $(this).toggleClass('active'); // Toggle the active selector on the nav-item
+    });
+    // Show dropdown when clicked
+    $('#header-btn').on('click', function (e) {
+        $('#MENU_ID_HERE').toggleClass('active');
+        $('.nav-btn').toggleClass('active');
+    });
+
+    // Hide menu after clicking menu item
+    $('.dropdown-menu li').on('click', function (e) {
+        $('#MENU_ID_HERE').removeClass('active');
+        $('.nav-btn').removeClass('active');
+    });
+</script>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            baseURL: "http://192.168.1.106:10086",
+            docs: [],
+            user: {
+                userEmail: "userEmail@email.com",
+                userImg: "/img",
+                userName: "user"
+            },
+            doc: {
+                docId: 0,
+                userEmail: ""
+            },
+            docData: {
+                docNum: 0,
+                docAllClicks: 0,
+                docAllCollections: 0,
+                docAllSees: 0
+            }
+        },
+        methods: {
+            logOut: function () {
+                this.judgeLogin.login = false
+                localStorage.setItem("judgeLogin", JSON.stringify(this.judgeLogin));
+                window.location.href = "login.html";
+            },
+            jumpAddDoc: function () {
+                //alert(this.user.userEmail)
+                this.doc.userEmail = this.user.userEmail;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("edit.html");
+            },
+            getDocData: function () {
+                console.log(this.user.userEmail);
+                axios({
+                    method: 'GET',
+                    url: this.baseURL + '/doc_data/' + this.user.userEmail
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            console.log(Result.data);
+                            this.docs = Result.data;
+                            this.sumDocData();
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            sortDataByScore: function (sortCode) {
+                /* 80001 升序 */
+                /* 80000 降序 */
+                console.log(this.user.userEmail);
+                axios({
+                    method: 'GET',
+                    url: this.baseURL + '/doc_data/score?userEmail=' + this.user.userEmail + "&sortCode=" + sortCode
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            console.log(Result.data);
+                            this.docs = Result.data;
+                            this.sumDocData();
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            sortDataByClick: function (sortCode) {
+                /* 70001 升序 */
+                /* 70000 降序 */
+                console.log(this.user.userEmail);
+                axios({
+                    method: 'GET',
+                    url: this.baseURL + '/doc_data/click?userEmail=' + this.user.userEmail + "&sortCode=" + sortCode
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            console.log(Result.data);
+                            this.docs = Result.data;
+                            this.sumDocData();
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            sortDataByCollection: function (sortCode) {
+                /* 60001 升序 */
+                /* 60000 降序 */
+                console.log(this.user.userEmail);
+                axios({
+                    method: 'GET',
+                    url: this.baseURL + '/doc_data/collection?userEmail=' + this.user.userEmail + "&sortCode=" + sortCode
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            console.log(Result.data);
+                            this.docs = Result.data;
+                            this.sumDocData();
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            sortDataBySee: function (sortCode) {
+                /* 50001 升序 */
+                /* 50000 降序 */
+                console.log(this.user.userEmail);
+                axios({
+                    method: 'GET',
+                    url: this.baseURL + '/doc_data/see?userEmail=' + this.user.userEmail + "&sortCode=" + sortCode
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            console.log(Result.data);
+                            this.docs = Result.data;
+                            this.sumDocData();
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
+            sumDocData: function () {
+                this.docData.docNum = 0;
+                this.docData.docAllClicks = 0;
+                this.docData.docAllCollections = 0;
+                this.docData.docAllSees = 0;
+                this.docData.docNum = this.docs.length;
+                for (let i = 0; i < this.docs.length; i++) {
+                    let clicks = this.docs[i].clicks;
+                    let collections = this.docs[i].collections;
+                    let sees = this.docs[i].docSees;
+                    this.docData.docAllClicks += clicks == null ? 0 : clicks;
+                    this.docData.docAllCollections += collections == null ? 0 : collections;
+                    this.docData.docAllSees += sees == null ? 0 : sees;
+                }
+                console.info(this.docData);
+            }
+
+        },
+        mounted() {
+            console.info(JSON.parse(localStorage.getItem("result")));
+            let user = JSON.parse(localStorage.getItem("result"));
+            this.user.userName = user.userName;
+            this.user.userEmail = user.userEmail;
+            this.user.userImg = user.userImg;
+
+            this.getDocData();
+        }
+    })
+    function jumpAddDoc() {
+        this.app.jumpAddDoc();
+    }
+    function logOut() {
+        this.app.logOut();
+    }
+</script>
+
+</html>
