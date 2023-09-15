@@ -173,7 +173,8 @@
                         </div>
                         <div class="content c">
                             <p>你目前为止已经发布了</p>
-                            <a class="tag tag--info tooltip" data-tooltip="点击查看" href="my-doc-data.html">{{this.docs.length}}篇文章</a>
+                            <a class="tag tag--info tooltip" data-tooltip="点击查看"
+                                href="my-doc-data.html">{{this.docs.length}}篇文章</a>
                         </div>
                         <div class="card__footer content c">6:32 PM - 3 Jul 18</div>
                     </div>
@@ -218,8 +219,8 @@
                     </div>
                     <div class="tile__buttons m-0">
                         <button class="btn--sm btn-animated btn-primary" @click="jumpDoc(item)">👉查看</button>
-                        <button class="btn--sm btn-animated btn-info ">编辑</button>
-                        <button class="btn--sm btn-animated btn-info ">删除</button>
+                        <button class="btn--sm btn-animated btn-info " @click="jumpEditDoc(item)">编辑</button>
+                        <button class="btn--sm btn-animated btn-info " @click="deleteDoc(item)">删除</button>
                     </div>
                 </div>
             </div>
@@ -310,6 +311,15 @@
                 //alert(this.user.userEmail)
                 this.doc.userEmail = this.user.userEmail;
                 sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                window.open("edit.html");
+            },
+
+            jumpEditDoc: function (item) {
+                //alert(this.user.userEmail)
+                this.doc.userEmail = this.user.userEmail;
+                this.doc.docId = item.docId;
+                sessionStorage.setItem("doc", JSON.stringify(this.doc));
+                sessionStorage.setItem("isEdit", JSON.stringify(true));
                 window.open("edit.html");
             },
 
@@ -463,7 +473,31 @@
             },
             requestPage: function (page) {
                 let rows = 4;
-            }
+
+                
+            },
+            deleteDoc: function (item) {
+                axios({
+                    method: 'DELETE',
+                    url: this.baseURL + '/docs/delete/' + item.docId
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20021) {
+                            //console.log(Result.data);
+                            this.getDocs();
+                            Qmsg.success(msg);
+                        } else {
+                            Qmsg.info(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
+            },
         },
         mounted() {
             console.info(JSON.parse(localStorage.getItem("result")));

@@ -165,13 +165,15 @@
             isEdit: false,
             doc: {
                 userEmail: "",
+                docId: 0,
                 docContext: "",
                 docTitle: "",
                 docDescription: ""
             },
             arr: ["tag--primary", "tag--info", "tag--link", "tag--success", "tag--warning", "tag--danger"],
             file: [],
-            imgUrl: ""
+            imgUrl: "",
+            editDoc: false
         },
         methods: {
             addTag: function () {
@@ -206,7 +208,7 @@
                 this.isEdit = false;
 
             },
-            submit: function () {
+            addDoc: function() {
                 if (this.doc.docTitle != null && this.doc.docTitle != "") {
                     if (this.doc.docDescription != null && this.doc.docDescription != "" || this.doc.docDescription > 499) {
                         if (this.doc.docContext != null && this.doc.docDescription != "" && this.doc.docContext.length >= 200) {
@@ -236,6 +238,7 @@
                                         content.innerHTML = marked.parse("");
                                         this.isShow = true;
                                         this.isEdit = false;
+                                        sessionStorage.setItem("isEdit", JSON.stringify(false));
                                     } else {
                                         Qmsg.error(msg);
                                     }
@@ -253,8 +256,60 @@
                 else {
                     Qmsg.warning("文章标题不能为空");
                 }
-
-
+            },
+            submit: function () {
+                if(this.editDoc) {
+                    if (this.doc.docTitle != null && this.doc.docTitle != "") {
+                    if (this.doc.docDescription != null && this.doc.docDescription != "" || this.doc.docDescription > 499) {
+                        if (this.doc.docContext != null && this.doc.docDescription != "" && this.doc.docContext.length >= 200) {
+                            //console.log(this.doc);
+                            //console.log(this.userEmail);
+                            /* 发送axios请求 */
+                            axios({
+                                method: 'POST',
+                                url: this.baseURL + '/docs/update',
+                                data: {
+                                    doc: this.doc,
+                                    docTags: this.tags
+                                }
+                            })
+                                .then(response => {
+                                    Result = response.data;
+                                    //console.log(Result);
+                                    let code = Result.code;
+                                    let msg = Result.msg;
+                                    if (code == 20031) {
+                                        //console.log(Result.data);
+                                        Qmsg.success(msg);
+                                        this.doc.docContext = "";
+                                        this.doc.docDescription = "";
+                                        this.doc.docTitle = "";
+                                        this.tags = [];
+                                        content.innerHTML = marked.parse("");
+                                        this.isShow = true;
+                                        this.isEdit = false;
+                                        sessionStorage.setItem("isEdit", JSON.stringify(false));
+                                    } else {
+                                        Qmsg.error(msg);
+                                    }
+                                }, error => {
+                                    console.log('错误', error.message);
+                                    Qmsg.error(error.message);
+                                });
+                        } else {
+                            Qmsg.warning("文章内容不能为空或小于200字数")
+                        }
+                    } else {
+                        Qmsg.warning("文章描述不能为空, 字数需小于500字");
+                    }
+                }
+                else {
+                    Qmsg.warning("文章标题不能为空");
+                }
+                } else {
+                    this.addDoc();
+                }
+                
             },
             checkFile: function () {
                 this.file = inputFile.files[0];
@@ -317,12 +372,50 @@
                     inputFile.value = "";
                     Qmsg.warning("文章内容描述和标题不能为空");
                 }
+            },
+            init: async function() {
+                await axios({
+                    method: 'POST',
+                    url: this.baseURL + '/docs/doc',
+                    data: {
+                        userEmail: this.doc.userEmail,
+                        docId: this.doc.docId
+                    }
+                })
+                    .then(response => {
+                        Result = response.data;
+                        //console.log(Result);
+                        let code = Result.code;
+                        let msg = Result.msg;
+                        if (code == 20041) {
+                            //console.log(Result.data[0]);
+                            this.doc.docContext = Result.data[1].docContext;
+                            this.doc.docDescription = Result.data[1].docDescription;
+                            this.doc.docTitle = Result.data[1].docTitle;
+                            this.tags = Result.data[0];
+                            let arr = [];
+                            for(let i = 0; i < this.tags.length; i++) {
+                                arr[i] = this.tags[i].tagName;
+                            }
+                            this.tags = arr;
+                        } else {
+                            Qmsg.error(msg);
+                        }
+                    }, error => {
+                        console.log('错误', error.message);
+                        Qmsg.error(error.message);
+                    });
             }
 
         },
         mounted() {
-            this.doc.userEmail = JSON.parse(sessionStorage.getItem("doc")).userEmail;
+            this.doc = JSON.parse(sessionStorage.getItem("doc"));
             //alert(this.userEmail); 
+            this.editDoc = JSON.parse(sessionStorage.getItem("isEdit"));
+            this.editDoc == null ? false : this.editDoc;
+            if(this.editDoc) {
+                this.init();
+            }
         }
     });
 

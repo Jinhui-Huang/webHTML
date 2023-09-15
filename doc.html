@@ -218,6 +218,7 @@
             show: async function () {
                 let docTemp = JSON.parse(sessionStorage.getItem("doc"));
                 console.info(docTemp);
+                
                 this.doc.docId = docTemp.docId;
                 this.user.userEmail = docTemp.userEmail;
 
